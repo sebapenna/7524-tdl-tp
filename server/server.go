@@ -20,6 +20,7 @@ func formatPort(port string) string {
 
 func RunServer(port string) {
 	l, err := net.Listen(ConnectionType, formatPort(port))
+	fmt.Println("Server listening on port " + port)
 	if err != nil {
 		logger.LogError(err)
 		return
@@ -27,6 +28,7 @@ func RunServer(port string) {
 	defer l.Close()
 
 	c, err := l.Accept()
+	fmt.Println("Connection accepted")
 	if err != nil {
 		logger.LogError(err)
 		return
