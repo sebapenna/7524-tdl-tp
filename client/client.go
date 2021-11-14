@@ -3,6 +3,7 @@ package client
 import (
 	"bufio"
 	"fmt"
+	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"os"
@@ -25,9 +26,9 @@ func RunClient(connection string) {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print(">> ")
 		text, _ := reader.ReadString('\n')
-		fmt.Fprintf(c, text+"\n")
+		common.Send(c, text)
 
-		message, _ := bufio.NewReader(c).ReadString('\n')
+		message, _ := common.Receive(c)
 		fmt.Print("->: " + message)
 		if strings.TrimSpace(string(text)) == CloseConnectionCommand {
 			fmt.Println("TCP client exiting...")

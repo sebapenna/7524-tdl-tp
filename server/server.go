@@ -1,8 +1,8 @@
 package server
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"strings"
@@ -35,7 +35,7 @@ func RunServer(port string) {
 	}
 
 	for {
-		netData, err := bufio.NewReader(c).ReadString('\n')
+		netData, err := common.Receive(c)
 		if err != nil {
 			logger.LogError(err)
 			return
@@ -47,8 +47,7 @@ func RunServer(port string) {
 
 		fmt.Print("-> ", string(netData))
 		t := time.Now()
-		myTime := t.Format(time.RFC3339) + "\n"
-		c.Write([]byte(myTime))
+		common.Send(c, t.Format(time.RFC3339))
 	}
 
 }
