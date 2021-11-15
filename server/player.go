@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+const (
+	CloseConnectionCommand = "STOP"
+)
+
 type Player struct {
 	id     int
 	socket net.Conn

@@ -6,10 +6,6 @@ import (
 	"net"
 )
 
-const (
-	CloseConnectionCommand = "STOP"
-)
-
 type Lobby struct {
 	listenSocket net.Listener
 	players      []Player
