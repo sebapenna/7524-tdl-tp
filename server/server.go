@@ -1,39 +1,30 @@
 package server
 
 import (
+	"bufio"
 	"fmt"
-	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
+	"os"
 	"strings"
-	"time"
 )
 
 const (
-	ConnectionType         = "tcp"
-	CloseConnectionCommand = "STOP"
+	ConnectionType        = "tcp"
+	ShutdownServerCommand = "EXIT"
 )
 
 func formatPort(port string) string {
 	return ":" + port
 }
 
-func handleConnection(clientSocket net.Conn) {
+func shutdownServer(lobby Lobby) {
 	for {
-		netData, err := common.Receive(clientSocket)
-		if err != nil {
-			logger.LogError(err)
-			return
+		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+		if strings.TrimSpace(input) == ShutdownServerCommand {
+			ShutdownLobby(lobby)
+			break
 		}
-		if strings.TrimSpace(string(netData)) == CloseConnectionCommand {
-			fmt.Println("Exiting TCP server!")
-			clientSocket.Close()
-			return
-		}
-
-		fmt.Print("-> ", string(netData))
-		t := time.Now()
-		common.Send(clientSocket, t.Format(time.RFC3339))
 	}
 }
 
@@ -44,16 +35,11 @@ func RunServer(port string) {
 		logger.LogError(err)
 		return
 	}
-	defer l.Close()
+	lobby := Lobby{l, []Player{}}
 
-	for {
-		c, err := l.Accept()
-		fmt.Println("Connection accepted")
-		if err != nil {
-			logger.LogError(err)
-			return
-		}
-		go handleConnection(c)
-	}
+	/* Create thread to shut down server */
+	go shutdownServer(lobby)
+
+	RunLobby(lobby)
 
 }

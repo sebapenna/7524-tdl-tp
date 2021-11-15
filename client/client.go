@@ -28,10 +28,15 @@ func RunClient(connection string) {
 		text, _ := reader.ReadString('\n')
 		common.Send(c, text)
 
-		message, _ := common.Receive(c)
+		message, err := common.Receive(c)
+		if err != nil {
+			fmt.Println("Server disconnected. Client exiting...")
+			return
+		}
+
 		fmt.Print("->: " + message)
 		if strings.TrimSpace(string(text)) == CloseConnectionCommand {
-			fmt.Println("TCP client exiting...")
+			fmt.Println("Client exiting...")
 			return
 		}
 	}
