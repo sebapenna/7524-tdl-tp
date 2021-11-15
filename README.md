@@ -11,5 +11,5 @@
 
 ## Client
 
-- Run: `go run server.go <ip:port_number>`
+- Run: `go run client.go <ip:port_number>`
 - Stop: type `STOP` on prompt
