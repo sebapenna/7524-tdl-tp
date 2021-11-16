@@ -21,6 +21,7 @@ func RunClient(connection string) {
 		logger.LogError(err)
 		return
 	}
+	defer c.Close()
 
 	for {
 		reader := bufio.NewReader(os.Stdin)

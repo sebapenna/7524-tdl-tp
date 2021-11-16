@@ -5,6 +5,7 @@ import (
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -19,10 +20,14 @@ type Player struct {
 }
 
 func DisconnectPlayer(player Player) {
+	fmt.Println("Disconnecting player " + strconv.Itoa(player.id))
 	player.socket.Close()
 }
 
 func RunPlayerAction(player Player) {
+	/* Disconnect player when loop finished */
+	defer DisconnectPlayer(player)
+
 	for {
 		netData, err := common.Receive(player.socket)
 		if err != nil {
@@ -30,8 +35,7 @@ func RunPlayerAction(player Player) {
 			return
 		}
 		if strings.TrimSpace(string(netData)) == CloseConnectionCommand {
-			fmt.Println("Client disconnected. Closing connection...")
-			player.socket.Close()
+			fmt.Println("Client disconnected")
 			return
 		}
 

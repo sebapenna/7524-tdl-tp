@@ -31,8 +31,11 @@ func RunLobby(lobby Lobby) {
 }
 
 func ShutdownLobby(lobby Lobby) {
+	/* Close socket receiving connections */
+	lobby.listenSocket.Close()
+
+	/* Disconnect every player */
 	for i := range lobby.players {
 		DisconnectPlayer(lobby.players[i])
 	}
-	lobby.listenSocket.Close()
 }
