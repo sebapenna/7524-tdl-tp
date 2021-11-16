@@ -22,7 +22,7 @@ func formatPort(port string) string {
 // by the server input
 func shutdownServer(lobby Lobby) {
 	for {
-		/* Keep reading stding until the shutdown command is found */
+		/* Keep reading stdin until the shutdown command is found */
 		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		if strings.TrimSpace(input) == ShutdownServerCommand {
 			/* Shutdown the lobby and break the loop */
