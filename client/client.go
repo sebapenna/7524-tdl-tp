@@ -15,6 +15,9 @@ const (
 	CloseConnectionCommand = "STOP"
 )
 
+// RunClient connects to the server and keeps the connection
+// alive while the game is active or the server is not
+// closed
 func RunClient(connection string) {
 	c, err := net.Dial(ConnectionType, connection)
 	if err != nil {
