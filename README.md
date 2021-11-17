@@ -4,12 +4,12 @@
 
 ## Server
 
-- Run: `go run server.go <port_number>`
+- Run: `go run main.go <port_number> server`
 - Shutdown: type `EXIT` on prompt
 - Closes when client sends `STOP` message
 - Accepts multiple connections
 
 ## Client
 
-- Run: `go run client.go <ip:port_number>`
+- Run: `go run main.go <ip:port_number> client`
 - Stop: type `STOP` on prompt
