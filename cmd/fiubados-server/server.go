@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/sebapenna/7524-tdl-tp/logger"
 	"github.com/sebapenna/7524-tdl-tp/server"
-	"os"
 )
 
 const (
