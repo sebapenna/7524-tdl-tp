@@ -36,7 +36,7 @@ func RunClient(connection string) {
 			return
 		}
 
-		if (messageFromServer) == CloseConnectionCommand {
+		if messageFromServer == CloseConnectionCommand {
 			fmt.Println("Client exiting...")
 			return
 		}
@@ -46,7 +46,7 @@ func RunClient(connection string) {
 		fmt.Print(">> ")
 		textFromPrompt, _ := reader.ReadString('\n')
 
-		if (textFromPrompt) == CloseConnectionCommand {
+		if textFromPrompt == CloseConnectionCommand {
 			fmt.Println("Client exiting...")
 			return
 		}

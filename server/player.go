@@ -47,7 +47,7 @@ func RunPlayerAction(player Player) {
 			logger.LogError(err)
 			return
 		}
-		if (messageFromClient) == CloseConnectionCommand {
+		if messageFromClient == CloseConnectionCommand {
 			fmt.Println("Client disconnected")
 			return
 		}
@@ -71,13 +71,13 @@ func startupMenu(player Player) bool {
 		}
 		fmt.Println("-> ", messageFromClient)
 
-		if (messageFromClient) == "1" {
+		if messageFromClient == common.OptionOne {
 
 			fmt.Println("Player ", player.name, " selected option 1, searching match...")
 			puedeBuscarPartida = true
 			// ... //
 
-		} else if (messageFromClient) == "2" {
+		} else if messageFromClient == common.OptionTwo {
 
 			err = sendHelpSubMenuOptions(player)
 			if err != nil {
@@ -85,7 +85,7 @@ func startupMenu(player Player) bool {
 				return false
 			}
 
-		} else if (messageFromClient) == "3" {
+		} else if messageFromClient == common.OptionThree {
 
 			disconnectPlayerFromMenu(player)
 			return false
@@ -104,8 +104,8 @@ func sendMainMenuOptions(player Player) (string, error) {
 	defer fmt.Println("Player ", player.name, " redirected to main menu")
 
 	// Saluda al usuario y le muestra el menú
-	welcomeText := "Bienvenido a FIUBADOS:  (1) Play  (2) Help  (3) Exit"
-	common.Send(player.socket, welcomeText)
+
+	common.Send(player.socket, common.WelcomeMessage+common.MainMenuOptions)
 	// Recibe su respuesta
 	messageFromClient, err := common.Receive(player.socket)
 	return messageFromClient, err
@@ -122,26 +122,17 @@ func sendHelpSubMenuOptions(player Player) error {
 	var (
 		messageFromClient string
 		err               error
-		i                 int
-		helpText          string
 		volverAMainMenu   bool
 	)
 
-	textoDeAyudaPorPaginas := [3]string{"*texto de ayuda 1*", "*texto de ayuda 2*", "*texto de ayuda 3*"}
-
 	for !volverAMainMenu {
 
-		helpText = "AYUDA: " + textoDeAyudaPorPaginas[i] + " (1) Back to Main Menu (2) Next "
-		common.Send(player.socket, helpText)
+		common.Send(player.socket, common.HelpMessage+common.HelpMenuOptions)
 
 		messageFromClient, err = common.Receive(player.socket)
 
-		if (messageFromClient) == "1" {
+		if messageFromClient == common.OptionOne {
 			volverAMainMenu = true
-		}
-
-		if i < 2 {
-			i++
 		}
 
 	}
