@@ -2,9 +2,11 @@ package server
 
 import (
 	"fmt"
-	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"strconv"
+
+	"github.com/sebapenna/7524-tdl-tp/common"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 // Lobby is in charge of handling incoming connection
@@ -18,21 +20,26 @@ type Lobby struct {
 // Will keep receiving connections from clients until
 // the server is shutdown.
 func RunLobby(lobby Lobby) {
-	var nextPlayerId = 0
+	var nextPlayerId = 1
 	for {
 		/* Accept new connections or handle error if socket disconnected */
-		c, err := lobby.listenSocket.Accept()
+		currentSocket, err := lobby.listenSocket.Accept()
 		if err != nil {
 			logger.LogError(err)
 			fmt.Println("Server shutdown")
 			return
 		}
 
+		// recibe el nombre del jugador desde su cliente
+		common.Send(currentSocket, "Dame tu nombre")
+		receivedName, _ := common.Receive(currentSocket)
+		fmt.Print("-> ", receivedName)
+
 		/* Create new player and save it into the already existing ones */
-		newPlayer := Player{nextPlayerId, c}
+		newPlayer := Player{id: nextPlayerId, socket: currentSocket, name: receivedName}
 		lobby.players = append(lobby.players, newPlayer)
-		fmt.Println("Connection accepted: player " + strconv.Itoa(nextPlayerId))
-		nextPlayerId += 1
+		fmt.Println("Connection accepted: player " + strconv.Itoa(nextPlayerId) + ": " + newPlayer.name)
+		nextPlayerId++
 
 		/* Create a new thread for the latest player */
 		go RunPlayerAction(newPlayer)
