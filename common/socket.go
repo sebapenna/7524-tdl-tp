@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"net"
+	"strings"
 )
 
 func Receive(c net.Conn) (string, error) {
-	return bufio.NewReader(c).ReadString('\n')
+	str, err := bufio.NewReader(c).ReadString('\n')
+	return strings.TrimSpace(str), err
 }
 
 func Send(c net.Conn, text string) {

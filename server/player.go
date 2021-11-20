@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
@@ -48,12 +47,12 @@ func RunPlayerAction(player Player) {
 			logger.LogError(err)
 			return
 		}
-		if strings.TrimSpace(messageFromClient) == CloseConnectionCommand {
+		if (messageFromClient) == CloseConnectionCommand {
 			fmt.Println("Client disconnected")
 			return
 		}
 
-		fmt.Print("-> ", messageFromClient)
+		fmt.Println("-> ", messageFromClient)
 
 	}
 
@@ -70,15 +69,15 @@ func startupMenu(player Player) bool {
 			logger.LogError(err)
 			return false
 		}
-		fmt.Print("-> ", messageFromClient)
+		fmt.Println("-> ", messageFromClient)
 
-		if strings.TrimSpace(messageFromClient) == "1" {
+		if (messageFromClient) == "1" {
 
-			fmt.Print("Player ", player.name, " selected option 1, searching match...")
+			fmt.Println("Player ", player.name, " selected option 1, searching match...")
 			puedeBuscarPartida = true
 			// ... //
 
-		} else if strings.TrimSpace(messageFromClient) == "2" {
+		} else if (messageFromClient) == "2" {
 
 			err = sendHelpSubMenuOptions(player)
 			if err != nil {
@@ -86,7 +85,7 @@ func startupMenu(player Player) bool {
 				return false
 			}
 
-		} else if strings.TrimSpace(messageFromClient) == "3" {
+		} else if (messageFromClient) == "3" {
 
 			disconnectPlayerFromMenu(player)
 			return false
@@ -102,7 +101,7 @@ func startupMenu(player Player) bool {
 //Muestra opciones del menú y le pide al cliente que elija una
 func sendMainMenuOptions(player Player) (string, error) {
 
-	defer fmt.Print("Player ", player.name, " redirected to main menu")
+	defer fmt.Println("Player ", player.name, " redirected to main menu")
 
 	// Saluda al usuario y le muestra el menú
 	welcomeText := "Bienvenido a FIUBADOS:  (1) Play  (2) Help  (3) Exit"
@@ -137,7 +136,7 @@ func sendHelpSubMenuOptions(player Player) error {
 
 		messageFromClient, err = common.Receive(player.socket)
 
-		if strings.TrimSpace(messageFromClient) == "1" {
+		if (messageFromClient) == "1" {
 			volverAMainMenu = true
 		}
 

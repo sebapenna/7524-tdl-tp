@@ -3,10 +3,11 @@ package server
 import (
 	"bufio"
 	"fmt"
-	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"os"
 	"strings"
+
+	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 const (

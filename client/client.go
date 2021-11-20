@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strings"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
@@ -37,17 +36,17 @@ func RunClient(connection string) {
 			return
 		}
 
-		if strings.TrimSpace(messageFromServer) == CloseConnectionCommand {
+		if (messageFromServer) == CloseConnectionCommand {
 			fmt.Println("Client exiting...")
 			return
 		}
 
-		fmt.Print("->: " + messageFromServer)
+		fmt.Println("->: " + messageFromServer)
 
 		fmt.Print(">> ")
 		textFromPrompt, _ := reader.ReadString('\n')
 
-		if strings.TrimSpace(textFromPrompt) == CloseConnectionCommand {
+		if (textFromPrompt) == CloseConnectionCommand {
 			fmt.Println("Client exiting...")
 			return
 		}
