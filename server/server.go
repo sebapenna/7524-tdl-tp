@@ -42,7 +42,7 @@ func RunServer(port string) {
 		logger.LogError(err)
 		return
 	}
-	lobby := Lobby{l, []Player{}}
+	lobby := Lobby{l, []Player{}, []Game{}}
 
 	/* Create thread to shut down server */
 	go shutdownServer(lobby)

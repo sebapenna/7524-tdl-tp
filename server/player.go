@@ -19,6 +19,7 @@ type Player struct {
 	id int
 	//name   string
 	socket net.Conn
+	chanelPlayersReadyToPlay chan<- Player
 }
 
 // DisconnectPlayer Closes the connection of the current's
@@ -39,6 +40,7 @@ func RunPlayerAction(player Player) {
 
 	//que aca esté la logica de busqueda de partida en vez del for:
 	for puedeBuscarPartida {
+	    player.chanelPlayersReadyToPlay <- player
 		t := time.Now()
 		common.Send(player.socket, t.Format(time.RFC3339))
 
@@ -53,7 +55,7 @@ func RunPlayerAction(player Player) {
 			return
 		}
 
-		fmt.Println("-> ", messageFromClient)
+		fmt.Println("Player ", player.id, " -> ", messageFromClient)
 
 	}
 
