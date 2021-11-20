@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 	"strconv"
-	"time"
+	//"time"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
@@ -19,7 +19,9 @@ type Player struct {
 	id int
 	//name   string
 	socket net.Conn
+	puntaje int
 	chanelPlayersReadyToPlay chan<- Player
+	chanelQuestions chan<- Question
 }
 
 // DisconnectPlayer Closes the connection of the current's
@@ -33,29 +35,11 @@ func DisconnectPlayer(player Player) {
 // from the client linked to the player and managing
 // the game
 func RunPlayerAction(player Player) {
-	/* Disconnect player when loop finished */
-	defer DisconnectPlayer(player)
 
 	puedeBuscarPartida := startupMenu(player)
 
-	//que aca esté la logica de busqueda de partida en vez del for:
-	for puedeBuscarPartida {
+	if (puedeBuscarPartida) {
 	    player.chanelPlayersReadyToPlay <- player
-		t := time.Now()
-		common.Send(player.socket, t.Format(time.RFC3339))
-
-		messageFromClient, err := common.Receive(player.socket)
-		if err != nil {
-			logger.LogError(err)
-			return
-		}
-		if messageFromClient == CloseConnectionCommand {
-			fmt.Println("Client disconnected")
-
-			return
-		}
-
-		fmt.Println("Player ", player.id, " -> ", messageFromClient)
 
 	}
 
