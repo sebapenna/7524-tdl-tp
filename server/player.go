@@ -16,15 +16,15 @@ const (
 
 // Player represents each player connected to the server
 type Player struct {
-	id     int
-	name   string
+	id int
+	//name   string
 	socket net.Conn
 }
 
 // DisconnectPlayer Closes the connection of the current's
 // player client
 func DisconnectPlayer(player Player) {
-	fmt.Println("Disconnecting player " + strconv.Itoa(player.id) + " (" + player.name + ")")
+	fmt.Println("Disconnecting player " + strconv.Itoa(player.id) /*+ " (" + player.name + ")"*/)
 	player.socket.Close()
 }
 
@@ -49,6 +49,7 @@ func RunPlayerAction(player Player) {
 		}
 		if messageFromClient == CloseConnectionCommand {
 			fmt.Println("Client disconnected")
+
 			return
 		}
 
@@ -73,7 +74,7 @@ func startupMenu(player Player) bool {
 
 		if messageFromClient == common.OptionOne {
 
-			fmt.Println("Player ", player.name, " selected option 1, searching match...")
+			fmt.Println("Player " /*player.name*/, player.id, " selected option 1, searching match...")
 			puedeBuscarPartida = true
 			// ... //
 
@@ -101,11 +102,11 @@ func startupMenu(player Player) bool {
 //Muestra opciones del menú y le pide al cliente que elija una
 func sendMainMenuOptions(player Player) (string, error) {
 
-	defer fmt.Println("Player ", player.name, " redirected to main menu")
+	defer fmt.Println("Player " /*player.name*/, player.id, " redirected to main menu")
 
 	// Saluda al usuario y le muestra el menú
 
-	common.Send(player.socket, common.WelcomeMessage+common.MainMenuOptions)
+	common.Send(player.socket, common.WelcomeMessage+strconv.Itoa(player.id)+common.MainMenuOptions)
 	// Recibe su respuesta
 	messageFromClient, err := common.Receive(player.socket)
 	return messageFromClient, err
@@ -115,9 +116,9 @@ func sendMainMenuOptions(player Player) (string, error) {
 //Muestra opciones del Submenú de HELP y le pide al cliente que elija una
 func sendHelpSubMenuOptions(player Player) error {
 
-	fmt.Println("Player", player.name, "selected option 2, showing help...")
+	fmt.Println("Player" /*player.name*/, player.id, "selected option 2, showing help...")
 
-	defer fmt.Println("Player", player.name, "redirected to main menu")
+	defer fmt.Println("Player" /*player.name*/, player.id, "redirected to main menu")
 
 	var (
 		messageFromClient string

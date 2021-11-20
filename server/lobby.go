@@ -5,7 +5,6 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
@@ -20,7 +19,7 @@ type Lobby struct {
 // Will keep receiving connections from clients until
 // the server is shutdown.
 func RunLobby(lobby Lobby) {
-	var nextPlayerId = 1
+
 	for {
 		/* Accept new connections or handle error if socket disconnected */
 		currentSocket, err := lobby.listenSocket.Accept()
@@ -29,17 +28,17 @@ func RunLobby(lobby Lobby) {
 			fmt.Println("Server shutdown")
 			return
 		}
-
-		// recibe el nombre del jugador desde su cliente
-		common.Send(currentSocket, "Dame tu nombre")
-		receivedName, _ := common.Receive(currentSocket)
-		fmt.Print("-> ", receivedName)
-
+		/*
+		   Por ahora se quita el tema del nombre (lo vemos mas adelante)
+		   		// recibe el nombre del jugador desde su cliente
+		   		common.Send(currentSocket, "Dame tu nombre")
+		   		receivedName, _ := common.Receive(currentSocket)
+		   		fmt.Print("-> ", receivedName)
+		*/
 		/* Create new player and save it into the already existing ones */
-		newPlayer := Player{id: nextPlayerId, socket: currentSocket, name: receivedName}
+		newPlayer := Player{id: len(lobby.players) + 1, socket: currentSocket /*, name: receivedName*/}
 		lobby.players = append(lobby.players, newPlayer)
-		fmt.Println("Connection accepted: player " + strconv.Itoa(nextPlayerId) + ": " + newPlayer.name)
-		nextPlayerId++
+		fmt.Println("Connection accepted: player " + strconv.Itoa(newPlayer.id) /*+ ": " + newPlayer.name*/)
 
 		/* Create a new thread for the latest player */
 		go RunPlayerAction(newPlayer)
