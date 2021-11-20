@@ -12,7 +12,7 @@ $ go install ./cmd/...
 - Accepts multiple connections
 
 ### Run
-- App installed: `fiubados-server <port_numbre>`
+- App installed: `fiubados-server <port_number>`
 - App not installed: `go run cmd/fiubados-server/server.go <port_number>`
 
 ### Exit

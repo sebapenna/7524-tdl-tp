@@ -3,11 +3,11 @@ package client
 import (
 	"bufio"
 	"fmt"
-	"github.com/sebapenna/7524-tdl-tp/common"
-	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"os"
-	"strings"
+
+	"github.com/sebapenna/7524-tdl-tp/common"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 const (
@@ -19,30 +19,40 @@ const (
 // alive while the game is active or the server is not
 // closed
 func RunClient(connection string) {
-	c, err := net.Dial(ConnectionType, connection)
+	currentSocket, err := net.Dial(ConnectionType, connection)
 	if err != nil {
 		logger.LogError(err)
 		return
 	}
-	defer c.Close()
+	defer currentSocket.Close()
+
+	reader := bufio.NewReader(os.Stdin)
 
 	for {
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Print(">> ")
-		text, _ := reader.ReadString('\n')
-		common.Send(c, text)
 
-		message, err := common.Receive(c)
+		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
 			fmt.Println("Server disconnected. Client exiting...")
 			return
 		}
 
-		fmt.Print("->: " + message)
-		if strings.TrimSpace(string(text)) == CloseConnectionCommand {
+		if messageFromServer == CloseConnectionCommand {
 			fmt.Println("Client exiting...")
 			return
 		}
+
+		fmt.Println("->: " + messageFromServer)
+
+		fmt.Print(">> ")
+		textFromPrompt, _ := reader.ReadString('\n')
+
+		if textFromPrompt == CloseConnectionCommand {
+			fmt.Println("Client exiting...")
+			return
+		}
+
+		common.Send(currentSocket, textFromPrompt)
+
 	}
 
 }
