@@ -1,13 +1,11 @@
 package client
 
 import (
-	"bufio"
-	"fmt"
 	"net"
-	"os"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
+	"github.com/sebapenna/7524-tdl-tp/server"
 )
 
 const (
@@ -26,33 +24,12 @@ func RunClient(connection string) {
 	}
 	defer currentSocket.Close()
 
-	reader := bufio.NewReader(os.Stdin)
+	continueGame := server.HandShakeClient(currentSocket)
 
-	for {
-
-		messageFromServer, err := common.Receive(currentSocket)
-		if err != nil {
-			fmt.Println("Server disconnected. Client exiting...")
-			return
-		}
-
-		if messageFromServer == CloseConnectionCommand {
-			fmt.Println("Client exiting...")
-			return
-		}
-
-		fmt.Println("->: " + messageFromServer)
-
-		fmt.Print(">> ")
-		textFromPrompt, _ := reader.ReadString('\n')
-
-		if textFromPrompt == CloseConnectionCommand {
-			fmt.Println("Client exiting...")
-			return
-		}
-
-		common.Send(currentSocket, textFromPrompt)
-
+	if continueGame == false {
+		return
 	}
+
+	common.RunClientProtocol(currentSocket)
 
 }
