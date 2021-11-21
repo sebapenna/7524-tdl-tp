@@ -8,9 +8,10 @@ import (
 )
 
 const (
-	WelcomeMessage         = "Bienvenido a FIUBADOS Jugador: "
-	MainMenuOptions        = "(1) Play  (2) Help  (3) Exit"
-	HelpMessage            = "AYUDA: *texto de ayudaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa*"
+	WelcomeMessage  = "Welcome to FIUBADOS Player: "
+	MainMenuOptions = "(1) Play  (2) Help  (3) Exit"
+	// Le puse todos esos espacios al HELP para que se impriman las instrucciones una abajo de la otra
+	HelpMessage            = "HELP:                                                                             ~~~ This game consists of 10 multiple choice questions ~~~                            ~~~ Each player will answer the number of the option chosen ~~~                       ~~~ If the first player to answer does it correctly gets the point ~~~                ~~~ If not the other player does ~~~                                                  ~~~ At the end of the game the player with the highest score wins ~~~"
 	HelpMenuOptions        = "(1) Back to Main Menu"
 	OptionOne              = "1"
 	OptionTwo              = "2"
@@ -18,9 +19,9 @@ const (
 	CloseConnectionCommand = "STOP"
 )
 
+// Runs Client actions in game
 func RunClientProtocol(currentSocket net.Conn) {
 	reader := bufio.NewReader(os.Stdin)
-
 	for {
 
 		messageFromServer, err := Receive(currentSocket)
@@ -34,7 +35,6 @@ func RunClientProtocol(currentSocket net.Conn) {
 			return
 		}
 		fmt.Println("->: " + messageFromServer)
-
 		fmt.Print(">> ")
 		textFromPrompt, _ := reader.ReadString('\n')
 
