@@ -6,19 +6,20 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 func HandShakeServer(player Player) bool {
-	return startUpMenu(player)
+	return startUpMenuServer(player)
 }
 
 func HandShakeClient(currentSocket net.Conn) bool {
 
-	reader := bufio.NewReader(os.Stdin)
 	for {
+		reader := bufio.NewReader(os.Stdin)
 		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
 			fmt.Println("Server disconnected. Client exiting...")
@@ -29,18 +30,40 @@ func HandShakeClient(currentSocket net.Conn) bool {
 
 			return false
 		}
-		fmt.Println("->: " + messageFromServer)
+		if strings.HasPrefix(messageFromServer, common.WelcomeMessage) {
+			fmt.Println("->: " + messageFromServer)
+			common.Send(currentSocket, "")
+			messageFromServerAux, err := common.Receive(currentSocket)
+			if err != nil {
+				fmt.Println("Server disconnected. Client exiting...")
+				return false
+			}
+			fmt.Println("->: " + messageFromServerAux)
 
+		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
+			fmt.Println("->: " + messageFromServer)
+			common.Send(currentSocket, "")
+			messageFromServerAux, err := common.Receive(currentSocket)
+			if err != nil {
+				fmt.Println("Server disconnected. Client exiting...")
+				return false
+			}
+			fmt.Println("->: " + messageFromServerAux)
+
+		} else {
+			fmt.Println("->: " + messageFromServer)
+		}
 		fmt.Print(">> ")
 		textFromPrompt, _ := reader.ReadString('\n')
 
 		common.Send(currentSocket, textFromPrompt)
+
 	}
 
 }
 
 // Devuelve true si puede comenzar a buscar partida correctamente tras el menú , false en caso contrario
-func startUpMenu(player Player) bool {
+func startUpMenuServer(player Player) bool {
 
 	puedeBuscarPartida := false
 	for !puedeBuscarPartida {
@@ -86,7 +109,9 @@ func sendMainMenuOptions(player Player) (string, error) {
 
 	// Saluda al usuario y le muestra el menú
 
-	common.Send(player.socket, common.WelcomeMessage+strconv.Itoa(player.id)+common.MainMenuOptions)
+	common.Send(player.socket, common.WelcomeMessage+strconv.Itoa(player.id))
+	common.Receive(player.socket)
+	common.Send(player.socket, common.MainMenuOptions)
 	// Recibe su respuesta
 	messageFromClient, err := common.Receive(player.socket)
 	return messageFromClient, err
@@ -108,8 +133,9 @@ func sendHelpSubMenuOptions(player Player) error {
 
 	for !volverAMainMenu {
 
-		common.Send(player.socket, common.HelpMessage+common.HelpMenuOptions)
-
+		common.Send(player.socket, common.HelpMessage)
+		common.Receive(player.socket)
+		common.Send(player.socket, common.HelpMenuOptions)
 		messageFromClient, err = common.Receive(player.socket)
 
 		if messageFromClient == common.OptionOne {
