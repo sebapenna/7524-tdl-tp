@@ -29,7 +29,5 @@ func RunClient(connection string) {
 	if continueGame == false {
 		return
 	}
-
 	common.RunClientProtocol(currentSocket)
-
 }

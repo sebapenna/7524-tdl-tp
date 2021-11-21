@@ -32,12 +32,9 @@ func DisconnectPlayer(player Player) {
 // from the client linked to the player and managing
 // the game
 func RunPlayerAction(player Player) {
-
 	puedeBuscarPartida := HandShakeServer(player) /*StartUpMenu(player)*/
 
 	if puedeBuscarPartida {
 		player.chanelPlayersReadyToPlay <- player
-
 	}
-
 }
