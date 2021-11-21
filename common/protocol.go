@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	WelcomeMessage         = "Bienvenido a FIUBADOS Jugador:"
+	WelcomeMessage         = "Bienvenido a FIUBADOS Jugador: "
 	MainMenuOptions        = "(1) Play  (2) Help  (3) Exit"
 	HelpMessage            = "AYUDA: *texto de ayuda * "
 	HelpMenuOptions        = "(1) Back to Main Menu "
