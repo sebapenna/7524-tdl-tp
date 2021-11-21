@@ -40,6 +40,16 @@ func HandShakeClient(currentSocket net.Conn) bool {
 			}
 			fmt.Println("->: " + messageFromServerAux)
 
+		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
+			fmt.Println("->: " + messageFromServer)
+			common.Send(currentSocket, "")
+			messageFromServerAux, err := common.Receive(currentSocket)
+			if err != nil {
+				fmt.Println("Server disconnected. Client exiting...")
+				return false
+			}
+			fmt.Println("->: " + messageFromServerAux)
+
 		} else {
 			fmt.Println("->: " + messageFromServer)
 		}
@@ -123,8 +133,9 @@ func sendHelpSubMenuOptions(player Player) error {
 
 	for !volverAMainMenu {
 
-		common.Send(player.socket, common.HelpMessage+common.HelpMenuOptions)
-
+		common.Send(player.socket, common.HelpMessage)
+		common.Receive(player.socket)
+		common.Send(player.socket, common.HelpMenuOptions)
 		messageFromClient, err = common.Receive(player.socket)
 
 		if messageFromClient == common.OptionOne {
