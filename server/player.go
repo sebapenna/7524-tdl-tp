@@ -1,9 +1,8 @@
 package server
 
 import (
-	"fmt"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
-	"strconv"
 	//"time"
 )
 
@@ -24,7 +23,7 @@ type Player struct {
 // DisconnectPlayer Closes the connection of the current's
 // player client
 func DisconnectPlayer(player Player) {
-	fmt.Println("Disconnecting player " + strconv.Itoa(player.id) /*+ " (" + player.name + ")"*/)
+	logger.LogInfo("Disconnecting player", player.id)
 	player.socket.Close()
 }
 

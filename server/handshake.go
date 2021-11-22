@@ -3,13 +3,12 @@ package server
 import (
 	"bufio"
 	"fmt"
+	"github.com/sebapenna/7524-tdl-tp/common"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"os"
 	"strconv"
 	"strings"
-
-	"github.com/sebapenna/7524-tdl-tp/common"
-	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 // Runs server actions before starting the game
@@ -24,34 +23,36 @@ func HandshakeClient(currentSocket net.Conn) bool {
 		reader := bufio.NewReader(os.Stdin)
 		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
-			fmt.Println("Server disconnected. Client exiting...")
+			logger.LogInfo("Server disconnected. Client exiting...")
 			return false
 		}
+
 		if messageFromServer == CloseConnectionCommand {
-			fmt.Println("Client exiting...")
+			logger.LogInfo("Client exiting...")
 
 			return false
 		}
+
 		if strings.HasPrefix(messageFromServer, common.WelcomeMessage) {
-			fmt.Println("->: " + messageFromServer)
-			common.Send(currentSocket, "")
+			logger.PrintMessageReceived(messageFromServer)
+			common.Send(currentSocket, common.Success)
 			messageFromServerAux, err := common.Receive(currentSocket)
 			if err != nil {
-				fmt.Println("Server disconnected. Client exiting...")
+				logger.LogInfo("Server disconnected. Client exiting...")
 				return false
 			}
-			fmt.Println("->: " + messageFromServerAux)
+			logger.PrintMessageReceived(messageFromServerAux)
 		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
-			fmt.Println("->: " + messageFromServer)
-			common.Send(currentSocket, "")
+			logger.PrintMessageReceived(messageFromServer)
+			common.Send(currentSocket, common.Success)
 			messageFromServerAux, err := common.Receive(currentSocket)
 			if err != nil {
-				fmt.Println("Server disconnected. Client exiting...")
+				logger.LogInfo("Server disconnected. Client exiting...")
 				return false
 			}
-			fmt.Println("->: " + messageFromServerAux)
+			logger.PrintMessageReceived(messageFromServerAux)
 		} else {
-			fmt.Println("->: " + messageFromServer)
+			logger.PrintMessageReceived(messageFromServer)
 		}
 		fmt.Print(">> ")
 		textFromPrompt, _ := reader.ReadString('\n')
@@ -69,18 +70,18 @@ func startUpMenuServer(player Player) bool {
 			logger.LogError(err)
 			return false
 		}
-		fmt.Println("-> ", messageFromClient)
-		if messageFromClient == common.OptionOne {
-			fmt.Println("Player " /*player.name*/, player.id, " selected option 1, searching match...")
+		switch messageFromClient {
+		case common.OptionOne:
+			logger.LogInfo("Player", player.id, "selected option 1, searching match...")
 			isAbleToLookForMatch = true
 			// ... //
-		} else if messageFromClient == common.OptionTwo {
+		case common.OptionTwo:
 			err = sendHelpSubMenuOptions(player)
 			if err != nil {
 				logger.LogError(err)
 				return false
 			}
-		} else if messageFromClient == common.OptionThree {
+		case common.OptionThree:
 			disconnectPlayerFromMenu(player)
 			return false
 		}
@@ -93,7 +94,7 @@ func startUpMenuServer(player Player) bool {
 //Shows menu options and asks the client to pick one.
 func sendMainMenuOptions(player Player) (string, error) {
 
-	defer fmt.Println("Player " /*player.name*/, player.id, " redirected to main menu")
+	defer logger.LogInfo("Player", player.id, "redirected to main menu")
 
 	// greets user and shows menu
 	common.Send(player.socket, common.WelcomeMessage+strconv.Itoa(player.id))
@@ -108,8 +109,8 @@ func sendMainMenuOptions(player Player) (string, error) {
 // Shows options from HELP Submenu and asks the client to pick one.
 func sendHelpSubMenuOptions(player Player) error {
 
-	fmt.Println("Player" /*player.name*/, player.id, "selected option 2, showing help...")
-	defer fmt.Println("Player" /*player.name*/, player.id, "redirected to main menu")
+	logger.LogInfo("Player", player.id, "selected option 2, showing help...")
+	defer logger.LogInfo("Player", player.id, "redirected to main menu")
 
 	var (
 		messageFromClient string
@@ -131,7 +132,6 @@ func sendHelpSubMenuOptions(player Player) error {
 
 // disconnect client from player that requested option 3 (Exit) from Menu.
 func disconnectPlayerFromMenu(player Player) {
-	fmt.Println("Player selected option 3, disconnecting client...")
 	common.Send(player.socket, CloseConnectionCommand)
-	fmt.Println("Client disconnected")
+	logger.LogInfo("Player", player.id, "disconnected")
 }

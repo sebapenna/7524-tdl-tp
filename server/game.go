@@ -1,13 +1,10 @@
 package server
 
 import (
-	"fmt"
-	//"net"
-	"math/rand"
-	"strconv"
-
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
+	"math/rand"
+	"strconv"
 )
 
 const (
@@ -21,7 +18,7 @@ type Game struct {
 }
 
 func RunStartGameAction(game Game) {
-	fmt.Println("Starting a new game with player ", game.player1.id, " and player ", game.player2.id)
+	logger.LogInfo("Starting a new game with player " + strconv.Itoa(game.player1.id) + " and player " + strconv.Itoa(game.player2.id))
 	NotifyPlayersStartOfGame(game.player1, game.player2)
 	questions := CreateRandomQuestions()
 
@@ -31,8 +28,8 @@ func RunStartGameAction(game Game) {
 		questions[randomQuestion] = questions[len(questions)-1]
 		questions = questions[:len(questions)-1]
 		questionToAsk.questionNumber = i
-		fmt.Println("Question to ask: ", questionToAsk)
-		fmt.Println(len(questions))
+		logger.LogInfo("Question to ask:", questionToAsk)
+		logger.LogInfo(strconv.Itoa(len(questions)))
 		AskQuestionToPlayers(game.player1, game.player2, questionToAsk)
 	}
 }
@@ -50,11 +47,11 @@ func AskQuestionToPlayers(player1 Player, player2 Player, question Question) {
 	if err != nil {
 		logger.LogError(err)
 	}
-	fmt.Println("Player 1 answer: ", responsePlayer1)
+	logger.LogInfo("Player 1 answer:", responsePlayer1)
 
 	responsePlayer2, err := common.Receive(player2.socket)
 	if err != nil {
 		logger.LogError(err)
 	}
-	fmt.Println("Player 2 answer: ", responsePlayer2)
+	logger.LogInfo("Player 2 answer:", responsePlayer2)
 }
