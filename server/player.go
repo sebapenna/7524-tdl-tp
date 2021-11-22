@@ -14,10 +14,10 @@ const (
 type Player struct {
 	id int
 	//name   string
-	socket                   net.Conn
-	puntaje                  int
-	chanelPlayersReadyToPlay chan<- Player
-	chanelQuestions          chan<- Question
+	socket                    net.Conn
+	points                    int
+	channelPlayersReadyToPlay chan<- Player
+	channelQuestions          chan<- Question
 }
 
 // DisconnectPlayer Closes the connection of the current's
@@ -34,6 +34,6 @@ func RunPlayerAction(player Player) {
 	puedeBuscarPartida := HandshakeServer(player) /*StartUpMenu(player)*/
 
 	if puedeBuscarPartida {
-		player.chanelPlayersReadyToPlay <- player
+		player.channelPlayersReadyToPlay <- player
 	}
 }
