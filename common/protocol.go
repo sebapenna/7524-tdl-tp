@@ -1,13 +1,5 @@
 package common
 
-import (
-	"bufio"
-	"fmt"
-	"github.com/sebapenna/7524-tdl-tp/logger"
-	"net"
-	"os"
-)
-
 const (
 	WelcomeMessage  = "Welcome to FIUBADOS Player: "
 	MainMenuOptions = "(1) Play  (2) Help  (3) Exit"
@@ -20,33 +12,3 @@ const (
 	CloseConnectionCommand = "STOP"
 	Success                = "OK"
 )
-
-// Runs Client actions in game
-func RunClientProtocol(currentSocket net.Conn) {
-	reader := bufio.NewReader(os.Stdin)
-	for {
-
-		messageFromServer, err := Receive(currentSocket)
-		if err != nil {
-			logger.LogInfo("Server disconnected. Client exiting...")
-			return
-		}
-		if messageFromServer == CloseConnectionCommand {
-			logger.LogInfo("Client exiting...")
-
-			return
-		}
-		logger.PrintMessageReceived(messageFromServer)
-		fmt.Print(">> ")
-		textFromPrompt, _ := reader.ReadString('\n')
-
-		if textFromPrompt == CloseConnectionCommand {
-			logger.LogInfo("Client exiting...")
-			return
-		}
-
-		Send(currentSocket, textFromPrompt)
-
-	}
-
-}
