@@ -24,7 +24,7 @@ func RunClient(connection string) {
 	}
 	defer currentSocket.Close()
 
-	continueGame := server.HandShakeClient(currentSocket)
+	continueGame := server.HandshakeClient(currentSocket)
 
 	if continueGame == false {
 		return

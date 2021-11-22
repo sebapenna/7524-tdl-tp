@@ -13,12 +13,12 @@ import (
 )
 
 // Runs server actions before starting the game
-func HandShakeServer(player Player) bool {
+func HandshakeServer(player Player) bool {
 	return startUpMenuServer(player)
 }
 
 // Runs client actions before starting the game
-func HandShakeClient(currentSocket net.Conn) bool {
+func HandshakeClient(currentSocket net.Conn) bool {
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
@@ -62,8 +62,8 @@ func HandShakeClient(currentSocket net.Conn) bool {
 //returns true if after menu it is able to star looking for a game match , contrary case return false
 func startUpMenuServer(player Player) bool {
 
-	isAbleToLookForMAtch := false
-	for !isAbleToLookForMAtch {
+	isAbleToLookForMatch := false
+	for !isAbleToLookForMatch {
 		messageFromClient, err := sendMainMenuOptions(player)
 		if err != nil {
 			logger.LogError(err)
@@ -72,7 +72,7 @@ func startUpMenuServer(player Player) bool {
 		fmt.Println("-> ", messageFromClient)
 		if messageFromClient == common.OptionOne {
 			fmt.Println("Player " /*player.name*/, player.id, " selected option 1, searching match...")
-			isAbleToLookForMAtch = true
+			isAbleToLookForMatch = true
 			// ... //
 		} else if messageFromClient == common.OptionTwo {
 			err = sendHelpSubMenuOptions(player)
@@ -86,7 +86,7 @@ func startUpMenuServer(player Player) bool {
 		}
 
 	}
-	return isAbleToLookForMAtch
+	return isAbleToLookForMatch
 
 }
 
