@@ -2,7 +2,6 @@ package server
 
 import (
 	"bufio"
-	"fmt"
 	"net"
 	"os"
 	"strings"
@@ -37,7 +36,7 @@ func shutdownServer(lobby Lobby) {
 // connections to be handled
 func RunServer(port string) {
 	l, err := net.Listen(ConnectionType, formatPort(port))
-	fmt.Println("Server listening on port " + port)
+	logger.LogInfo("Server listening on port " + port)
 	if err != nil {
 		logger.LogError(err)
 		return

@@ -12,3 +12,11 @@ func LogError(e error) {
 func LogErrorMessage(msg string) {
 	_, _ = fmt.Fprintln(os.Stderr, msg)
 }
+
+func LogInfo(a ...interface{}) {
+	fmt.Println(a)
+}
+
+func PrintMessageReceived(msg string) {
+	fmt.Println("->: " + msg)
+}

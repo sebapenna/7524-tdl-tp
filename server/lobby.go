@@ -1,11 +1,8 @@
 package server
 
 import (
-	"fmt"
-	"net"
-	"strconv"
-
 	"github.com/sebapenna/7524-tdl-tp/logger"
+	"net"
 )
 
 // Lobby is in charge of handling incoming connection
@@ -21,14 +18,14 @@ type Lobby struct {
 // the server is shutdown.
 func RunLobby(lobby Lobby) {
 	//Channel where players will inform Lobby when they are ready to play
-	chanelPlayersReadyToPlay := make(chan Player)
-	go CreateGames(chanelPlayersReadyToPlay)
+	channel := make(chan Player)
+	go CreateGames(channel)
 	for {
 		/* Accept new connections or handle error if socket disconnected */
 		currentSocket, err := lobby.listenSocket.Accept()
 		if err != nil {
 			logger.LogError(err)
-			fmt.Println("Server shutdown")
+			logger.LogInfo("Server shutdown")
 			return
 		}
 		/*
@@ -36,12 +33,12 @@ func RunLobby(lobby Lobby) {
 		   		// receives players name from its server
 		   		common.Send(currentSocket, "State your name below")
 		   		receivedName, _ := common.Receive(currentSocket)
-		   		fmt.Print("-> ", receivedName)
+		   		fmt.Print("->", receivedName)
 		*/
 		/* Create new player and save it into the already existing ones */
-		newPlayer := Player{id: len(lobby.players) + 1, socket: currentSocket, chanelPlayersReadyToPlay: chanelPlayersReadyToPlay /*, name: receivedName*/}
+		newPlayer := Player{id: len(lobby.players) + 1, socket: currentSocket, channelPlayersReadyToPlay: channel}
 		lobby.players = append(lobby.players, newPlayer)
-		fmt.Println("Connection accepted: player " + strconv.Itoa(newPlayer.id) /*+ ": " + newPlayer.name*/)
+		logger.LogInfo("Connection accepted: player", newPlayer.id)
 
 		/* Create a new thread for the latest player */
 		go RunPlayerAction(newPlayer)
@@ -49,12 +46,12 @@ func RunLobby(lobby Lobby) {
 }
 
 //Check players that are ready to play and starts a game
-func CreateGames(chanelPlayersReadyToPlay chan Player) {
-	playersReady := []Player{}
+func CreateGames(channelPlayersReadyToPlay chan Player) {
+	var playersReady []Player
 	for {
-		player := <-chanelPlayersReadyToPlay
+		player := <-channelPlayersReadyToPlay
 		playersReady = append(playersReady, player)
-		fmt.Println("Player ", player.id, " is ready to play!")
+		logger.LogInfo("Player", player.id, "is ready to play!")
 		if len(playersReady) == 2 {
 			newGame := Game{player1: playersReady[0], player2: playersReady[1]}
 			playersReady = append(playersReady[:0], playersReady[1:]...)

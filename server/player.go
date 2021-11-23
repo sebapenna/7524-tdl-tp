@@ -1,9 +1,8 @@
 package server
 
 import (
-	"fmt"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
-	"strconv"
 	//"time"
 )
 
@@ -15,16 +14,16 @@ const (
 type Player struct {
 	id int
 	//name   string
-	socket                   net.Conn
-	puntaje                  int
-	chanelPlayersReadyToPlay chan<- Player
-	chanelQuestions          chan<- Question
+	socket                    net.Conn
+	points                    int
+	channelPlayersReadyToPlay chan<- Player
+	channelQuestions          chan<- Question
 }
 
 // DisconnectPlayer Closes the connection of the current's
 // player client
 func DisconnectPlayer(player Player) {
-	fmt.Println("Disconnecting player " + strconv.Itoa(player.id) /*+ " (" + player.name + ")"*/)
+	logger.LogInfo("Disconnecting player", player.id)
 	player.socket.Close()
 }
 
@@ -32,9 +31,9 @@ func DisconnectPlayer(player Player) {
 // from the client linked to the player and managing
 // the game
 func RunPlayerAction(player Player) {
-	puedeBuscarPartida := HandShakeServer(player) /*StartUpMenu(player)*/
+	puedeBuscarPartida := HandshakeServer(player) /*StartUpMenu(player)*/
 
 	if puedeBuscarPartida {
-		player.chanelPlayersReadyToPlay <- player
+		player.channelPlayersReadyToPlay <- player
 	}
 }
