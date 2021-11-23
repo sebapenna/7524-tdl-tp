@@ -61,4 +61,5 @@ func runClientGameLoop(currentSocket net.Conn) {
 
 		common.Send(currentSocket, textFromPrompt)
 	}
+
 }

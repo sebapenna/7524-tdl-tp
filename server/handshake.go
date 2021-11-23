@@ -3,12 +3,13 @@ package server
 import (
 	"bufio"
 	"fmt"
-	"github.com/sebapenna/7524-tdl-tp/common"
-	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/sebapenna/7524-tdl-tp/common"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 // Runs server actions before starting the game
@@ -42,6 +43,13 @@ func HandshakeClient(currentSocket net.Conn) bool {
 				return false
 			}
 			logger.PrintMessageReceived(messageFromServerAux)
+			common.Send(currentSocket, common.Success)
+			messageFromServerAux2, err := common.Receive(currentSocket)
+			if err != nil {
+				logger.LogInfo("Server disconnected. Client exiting...")
+				return false
+			}
+			logger.PrintMessageReceived(messageFromServerAux2)
 		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
 			logger.PrintMessageReceived(messageFromServer)
 			common.Send(currentSocket, common.Success)
@@ -98,6 +106,8 @@ func sendMainMenuOptions(player Player) (string, error) {
 
 	// greets user and shows menu
 	common.Send(player.socket, common.WelcomeMessage+strconv.Itoa(player.id))
+	common.Receive(player.socket)
+	common.Send(player.socket, common.ObjectiveMessage)
 	common.Receive(player.socket)
 	common.Send(player.socket, common.MainMenuOptions)
 	// receives its answer
