@@ -1,8 +1,9 @@
 package server
 
 import (
-	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
+
+	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 // Lobby is in charge of handling incoming connection
