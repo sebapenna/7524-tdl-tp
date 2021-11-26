@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	GameDuration = 3
+	GameDuration = 10
 )
 
 // Game is responsible for handling a game between 2 players
