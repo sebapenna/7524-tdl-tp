@@ -16,7 +16,6 @@ type Player struct {
 	socket                    net.Conn
 	points                    int
 	channelPlayersReadyToPlay chan<- Player
-	channelQuestions          chan<- Question
 }
 
 // DisconnectPlayer Closes the connection of the current's
@@ -30,9 +29,9 @@ func DisconnectPlayer(player Player) {
 // from the client linked to the player and managing
 // the game
 func RunPlayerAction(player Player) {
-	puedeBuscarPartida := HandshakeServer(player) /*StartUpMenu(player)*/
+	readyToSearchForGame := HandshakeServer(player) /*StartUpMenu(player)*/
 
-	if puedeBuscarPartida {
+	if readyToSearchForGame {
 		player.channelPlayersReadyToPlay <- player
 	}
 }
