@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	GameDuration = 10
+	GameDuration = 3
 )
 
 // Game is responsible for handling a game between 2 players
@@ -34,19 +34,7 @@ func RunStartGameAction(game Game) {
 		return
 	}
 
-	questions := CreateRandomQuestions()
-
-	rand.Seed(time.Now().UnixNano()) // Set random seed to randomize questions
-	for i := 0; i < GameDuration; i++ {
-		randomQuestion := rand.Intn(len(questions))
-		questionToAsk := questions[randomQuestion]
-
-		questions[randomQuestion] = questions[len(questions)-1]
-		questions = questions[:len(questions)-1]
-		questionToAsk.questionNumber = i
-
-		askQuestionToPlayers(game.player1, game.player2, questionToAsk)
-	}
+	runGameLoop(game.player1, game.player2)
 }
 
 func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) {
@@ -96,25 +84,86 @@ func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
 	return nil
 }
 
-func askQuestionToPlayers(player1 Player, player2 Player, question Question) {
+type Answer struct {
+	player       *Player
+	question     Question
+	optionChosen int
+}
+
+func sendQuestionsAndReceiveAnswers(
+	player *Player,
+	questionsChannel chan Question,
+	answerChannel chan Answer,
+) {
 	msgToSend := func(question Question) string {
 		return "Question " + strconv.Itoa(question.questionNumber) + ": " + question.question + " 1)" + question.options[0] + " 2)" + question.options[1] + " 3)" + question.options[2]
 	}
 
-	common.Send(player1.socket, msgToSend(question))
-	common.Send(player2.socket, msgToSend(question))
+	for question := range questionsChannel {
+		common.Send(player.socket, msgToSend(question))
+		optionChosen, err := common.Receive(player.socket)
 
-	responsePlayer1, err := common.Receive(player1.socket)
-	// todo: si hay un error hay que desonectar a los 2
-	if err != nil {
-		logger.LogError(err)
-	}
-	logger.LogInfo("Player 1 answer:", responsePlayer1)
+		// todo: si hay un error hay que desconectar a los 2
+		if err != nil {
+			logger.LogError(err)
+		}
 
-	responsePlayer2, err := common.Receive(player2.socket)
-	// todo: si hay un error hay que desonectar a los 2
-	if err != nil {
-		logger.LogError(err)
+		opt, _ := strconv.Atoi(optionChosen)
+		answerChannel <- Answer{
+			player:       player,
+			question:     question,
+			optionChosen: opt,
+		}
 	}
-	logger.LogInfo("Player 2 answer:", responsePlayer2)
+}
+
+func notifyGameResult(msg string, player1 Player, player2 Player) {
+	common.Send(player1.socket, msg)
+	common.Send(player2.socket, msg)
+}
+
+func runGameLoop(player1 Player, player2 Player) {
+	questionsChannel1 := make(chan Question)
+	questionsChannel2 := make(chan Question)
+	answersChannel := make(chan Answer)
+	defer close(questionsChannel1)
+	defer close(questionsChannel2)
+	defer close(answersChannel)
+
+	go sendQuestionsAndReceiveAnswers(&player1, questionsChannel1, answersChannel)
+	go sendQuestionsAndReceiveAnswers(&player2, questionsChannel2, answersChannel)
+
+	questions := CreateRandomQuestions()
+
+	rand.Seed(time.Now().UnixNano()) // Set random seed to randomize questions
+	for i := 1; i <= GameDuration; i++ {
+		randomQuestion := rand.Intn(len(questions))
+		questionToAsk := questions[randomQuestion]
+
+		questions[randomQuestion] = questions[len(questions)-1]
+		questions = questions[:len(questions)-1]
+		questionToAsk.questionNumber = i
+		questionsChannel1 <- questionToAsk
+		questionsChannel2 <- questionToAsk
+
+		answer1 := <-answersChannel
+		answer2 := <-answersChannel
+
+		if answer1.optionChosen == questionToAsk.correctOption {
+			answer1.player.points++
+		} else {
+			answer2.player.points++
+		}
+	}
+
+	logger.LogInfo(player1.points)
+	logger.LogInfo(player2.points)
+	switch {
+	case player1.points > player2.points:
+		notifyGameResult("Player "+strconv.Itoa(player1.id)+" won!", player1, player2)
+	case player2.points > player1.points:
+		notifyGameResult("Player "+strconv.Itoa(player2.id)+" won!", player1, player2)
+	default:
+		notifyGameResult("Game tied!", player1, player2)
+	}
 }
