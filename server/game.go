@@ -117,9 +117,20 @@ func sendQuestionsAndReceiveAnswers(
 	}
 }
 
-func notifyGameResult(msg string, player1 Player, player2 Player) {
-	common.Send(player1.socket, msg)
-	common.Send(player2.socket, msg)
+func notifyWinner(player1 Player, player2 Player) {
+	notifyGameResult := func(msg string, player1 Player, player2 Player) {
+		common.Send(player1.socket, msg)
+		common.Send(player2.socket, msg)
+	}
+
+	switch {
+	case player1.points > player2.points:
+		notifyGameResult("Player "+strconv.Itoa(player1.id)+" won!", player1, player2)
+	case player2.points > player1.points:
+		notifyGameResult("Player "+strconv.Itoa(player2.id)+" won!", player1, player2)
+	default:
+		notifyGameResult("Game tied!", player1, player2)
+	}
 }
 
 func runGameLoop(player1 Player, player2 Player) {
@@ -156,14 +167,5 @@ func runGameLoop(player1 Player, player2 Player) {
 		}
 	}
 
-	logger.LogInfo(player1.points)
-	logger.LogInfo(player2.points)
-	switch {
-	case player1.points > player2.points:
-		notifyGameResult("Player "+strconv.Itoa(player1.id)+" won!", player1, player2)
-	case player2.points > player1.points:
-		notifyGameResult("Player "+strconv.Itoa(player2.id)+" won!", player1, player2)
-	default:
-		notifyGameResult("Game tied!", player1, player2)
-	}
+	notifyWinner(player1, player2)
 }
