@@ -2,7 +2,6 @@ package server
 
 import (
 	"net"
-
 	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
@@ -29,13 +28,7 @@ func RunLobby(lobby Lobby) {
 			logger.LogInfo("Server shutdown")
 			return
 		}
-		/*
-		   Por ahora se quita el tema del nombre (lo vemos mas adelante)
-		   		// receives players name from its server
-		   		common.Send(currentSocket, "State your name below")
-		   		receivedName, _ := common.Receive(currentSocket)
-		   		fmt.Print("->", receivedName)
-		*/
+
 		/* Create new player and save it into the already existing ones */
 		newPlayer := Player{id: len(lobby.players) + 1, socket: currentSocket, channelPlayersReadyToPlay: channel}
 		lobby.players = append(lobby.players, newPlayer)
