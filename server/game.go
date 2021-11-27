@@ -38,12 +38,12 @@ func RunStartGameAction(game Game) {
 }
 
 func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) {
-	msgToSend := func(id int) string {
-		return "You are playing against player " + strconv.Itoa(id) + ". Enter READY when ready to play"
+	msgToSend := func(playerName string) string {
+		return "You are playing against player " + playerName + ". Enter READY when ready to play"
 	}
 
 	for {
-		common.Send(player.socket, msgToSend(otherPlayer.id))
+		common.Send(player.socket, msgToSend(otherPlayer.name))
 		msg, err := common.Receive(player.socket)
 		if err != nil {
 			logger.LogError(err)
@@ -125,9 +125,9 @@ func notifyWinner(player1 Player, player2 Player) {
 
 	switch {
 	case player1.points > player2.points:
-		notifyGameResult("Player "+strconv.Itoa(player1.id)+" won!", player1, player2)
+		notifyGameResult("Player "+ player1.name +" won!", player1, player2)
 	case player2.points > player1.points:
-		notifyGameResult("Player "+strconv.Itoa(player2.id)+" won!", player1, player2)
+		notifyGameResult("Player "+ player2.name +" won!", player1, player2)
 	default:
 		notifyGameResult("Game tied!", player1, player2)
 	}

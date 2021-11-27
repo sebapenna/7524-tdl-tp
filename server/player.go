@@ -13,6 +13,7 @@ const (
 // Player represents each player connected to the server
 type Player struct {
 	id                        int
+	name                      string
 	socket                    net.Conn
 	points                    int
 	channelPlayersReadyToPlay chan<- Player
