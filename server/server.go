@@ -21,13 +21,15 @@ func formatPort(port string) string {
 // Shuts down the server if the specified command is read
 // by the server input
 func shutdownServer(lobby Lobby) {
-	for {
+	var requestToShutdownWasMade bool
+	for !requestToShutdownWasMade {
 		/* Keep reading stdin until the shutdown command is found */
 		input, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		if strings.TrimSpace(input) == ShutdownServerCommand {
 			/* Shutdown the lobby and break the loop */
+			requestToShutdownWasMade = true
 			ShutdownLobby(lobby)
-			break
+
 		}
 	}
 }
@@ -43,7 +45,7 @@ func RunServer(port string) {
 	}
 	lobby := Lobby{l, []Player{}, []Game{}}
 
-	/* Create thread to shut down server */
+	/* Create thread to shut down server whenever it's requested */
 	go shutdownServer(lobby)
 
 	/* Put the lobby to work in the current thread */

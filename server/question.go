@@ -1,10 +1,5 @@
 package server
 
-//"fmt"
-//"strconv"
-
-//"github.com/sebapenna/7524-tdl-tp/logger"
-
 type Question struct {
 	questionNumber int
 	question       string
