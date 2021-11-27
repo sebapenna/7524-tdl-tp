@@ -15,8 +15,8 @@ const (
 
 // Game is responsible for handling a game between 2 players
 type Game struct {
-	player1 Player
-	player2 Player
+	player1         Player
+	player2         Player
 }
 
 func DisconnectGame(game Game) {
@@ -125,11 +125,11 @@ func notifyWinner(player1 Player, player2 Player) {
 
 	switch {
 	case player1.points > player2.points:
-		notifyGameResult("Player "+ player1.name +" won!", player1, player2)
+		notifyGameResult("Player "+ player1.name +" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
 	case player2.points > player1.points:
-		notifyGameResult("Player "+ player2.name +" won!", player1, player2)
+		notifyGameResult("Player "+ player2.name +" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
 	default:
-		notifyGameResult("Game tied!", player1, player2)
+		notifyGameResult("Game tied! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
 	}
 }
 

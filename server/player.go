@@ -1,6 +1,7 @@
 package server
 
 import (
+    "github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
 	"net"
 	//"time"
@@ -30,9 +31,20 @@ func DisconnectPlayer(player Player) {
 // from the client linked to the player and managing
 // the game
 func RunPlayerAction(player Player) {
+    RequestPlayerName(&player)
 	readyToSearchForGame := HandshakeServer(player) /*StartUpMenu(player)*/
 
 	if readyToSearchForGame {
 		player.channelPlayersReadyToPlay <- player
 	}
+}
+
+func RequestPlayerName(player *Player) {
+    common.Send(player.socket, "Please enter a name to play: ")
+    playerName, err := common.Receive(player.socket)
+
+    player.name = playerName
+    if err != nil {
+        logger.LogError(err)
+    }
 }

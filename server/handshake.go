@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
@@ -105,7 +104,7 @@ func sendMainMenuOptions(player Player) (string, error) {
 	defer logger.LogInfo("Player", player.id, "redirected to main menu")
 
 	// greets user and shows menu
-	common.Send(player.socket, common.WelcomeMessage+strconv.Itoa(player.id))
+	common.Send(player.socket, common.WelcomeMessage+player.name)
 	common.Receive(player.socket)
 	common.Send(player.socket, common.ObjectiveMessage)
 	common.Receive(player.socket)
