@@ -32,7 +32,7 @@ func DisconnectPlayer(player Player) {
 // the game
 func RunPlayerAction(player Player) {
 	RequestPlayerName(&player)
-	readyToSearchForGame := HandshakeServer(player) /*StartUpMenu(player)*/
+	readyToSearchForGame := HandshakeServer(player)
 
 	if readyToSearchForGame {
 		player.channelPlayersReadyToPlay <- player

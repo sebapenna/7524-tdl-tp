@@ -20,7 +20,7 @@ func HandshakeServer(player Player) bool {
 func HandshakeClient(currentSocket net.Conn) bool {
 
 	for {
-		reader := bufio.NewReader(os.Stdin)
+		promptReader := bufio.NewReader(os.Stdin)
 		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
 			logger.LogInfo("Server disconnected. Client exiting...")
@@ -49,6 +49,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 				return false
 			}
 			logger.PrintMessageReceived(messageFromServerAux2)
+
 		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
 			logger.PrintMessageReceived(messageFromServer)
 			common.Send(currentSocket, common.Success)
@@ -58,17 +59,27 @@ func HandshakeClient(currentSocket net.Conn) bool {
 				return false
 			}
 			logger.PrintMessageReceived(messageFromServerAux)
+
 		} else {
 			logger.PrintMessageReceived(messageFromServer)
 		}
-		fmt.Print(">> ")
-		textFromPrompt, _ := reader.ReadString('\n')
-		common.Send(currentSocket, textFromPrompt)
+
+		if messageFromServer == common.SearchingMatchMessage {
+			common.Send(currentSocket, common.Success)
+
+		} else {
+			fmt.Print(">> ")
+			textFromPrompt, _ := promptReader.ReadString('\n')
+			common.Send(currentSocket, textFromPrompt)
+		}
+
 	}
 }
 
 //returns true if after menu it is able to star looking for a game match , contrary case return false
 func startUpMenuServer(player Player) bool {
+
+	logger.LogInfo("Player", player.id, "directed to main menu")
 
 	isAbleToLookForMatch := false
 	for !isAbleToLookForMatch {
@@ -77,18 +88,21 @@ func startUpMenuServer(player Player) bool {
 			logger.LogError(err)
 			return false
 		}
+
 		switch messageFromClient {
-		case common.OptionOne:
+		case common.PlayOption:
 			logger.LogInfo("Player", player.id, "selected option 1, searching match...")
 			isAbleToLookForMatch = true
-			// ... //
-		case common.OptionTwo:
+			sendFindingMatchMessage(player)
+
+		case common.HelpOption:
 			err = sendHelpSubMenuOptions(player)
 			if err != nil {
 				logger.LogError(err)
 				return false
 			}
-		case common.OptionThree:
+
+		case common.ExitOption:
 			disconnectPlayerFromMenu(player)
 			return false
 		}
@@ -100,8 +114,6 @@ func startUpMenuServer(player Player) bool {
 
 //Shows menu options and asks the client to pick one.
 func sendMainMenuOptions(player Player) (string, error) {
-
-	defer logger.LogInfo("Player", player.id, "redirected to main menu")
 
 	// greets user and shows menu
 	common.Send(player.socket, common.WelcomeMessage+player.name)
@@ -132,11 +144,16 @@ func sendHelpSubMenuOptions(player Player) error {
 		common.Receive(player.socket)
 		common.Send(player.socket, common.HelpMenuOptions)
 		messageFromClient, err = common.Receive(player.socket)
-		if messageFromClient == common.OptionOne {
+		if messageFromClient == common.PlayOption {
 			returnToMainMenu = true
 		}
 	}
 	return err
+}
+
+func sendFindingMatchMessage(player Player) {
+	common.Send(player.socket, common.SearchingMatchMessage)
+	common.Receive(player.socket)
 }
 
 // disconnect client from player that requested option 3 (Exit) from Menu.

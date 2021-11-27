@@ -43,7 +43,8 @@ func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) 
 		return "You are playing against player " + playerName + ". Enter READY when ready to play"
 	}
 
-	for {
+	var playerIsReady bool
+	for playerIsReady == false {
 		common.Send(player.socket, msgToSend(otherPlayer.name))
 		msg, err := common.Receive(player.socket)
 		if err != nil {
@@ -52,7 +53,7 @@ func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) 
 			return
 		}
 		if msg == common.ReadyToPlay {
-			break
+			playerIsReady = true
 		}
 	}
 
