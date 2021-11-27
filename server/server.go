@@ -37,13 +37,13 @@ func shutdownServer(lobby Lobby) {
 // RunServer starts the server and enable incoming
 // connections to be handled
 func RunServer(port string) {
-	l, err := net.Listen(ConnectionType, formatPort(port))
+	lobbySocket, err := net.Listen(ConnectionType, formatPort(port))
 	logger.LogInfo("Server listening on port " + port)
 	if err != nil {
 		logger.LogError(err)
 		return
 	}
-	lobby := Lobby{l, []Player{}, []Game{}}
+	lobby := Lobby{listenSocket: lobbySocket, players: []Player{}, games: []Game{}}
 
 	/* Create thread to shut down server whenever it's requested */
 	go shutdownServer(lobby)

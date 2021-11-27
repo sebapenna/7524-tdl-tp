@@ -9,7 +9,7 @@ import (
 
 const (
 	ClientExpectedArgs = 2
-	ConnectionPos      = 1
+	ConnectionPosition = 1
 )
 
 func main() {
@@ -19,5 +19,5 @@ func main() {
 		return
 	}
 
-	client.RunClient(arguments[ConnectionPos])
+	client.RunClient(arguments[ConnectionPosition])
 }

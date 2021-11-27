@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-func Receive(c net.Conn) (string, error) {
-	str, err := bufio.NewReader(c).ReadString('\n')
+func Receive(connectionSocket net.Conn) (string, error) {
+	str, err := bufio.NewReader(connectionSocket).ReadString('\n')
 	return strings.TrimSpace(str), err
 }
 
-func Send(c net.Conn, text string) {
-	fmt.Fprintf(c, text+"\n")
+func Send(connectionSocket net.Conn, text string) {
+	fmt.Fprintf(connectionSocket, text+"\n")
 }

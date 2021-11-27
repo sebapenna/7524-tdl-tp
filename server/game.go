@@ -2,11 +2,12 @@ package server
 
 import (
 	"errors"
-	"github.com/sebapenna/7524-tdl-tp/common"
-	"github.com/sebapenna/7524-tdl-tp/logger"
 	"math/rand"
 	"strconv"
 	"time"
+
+	"github.com/sebapenna/7524-tdl-tp/common"
+	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
 const (
@@ -15,8 +16,8 @@ const (
 
 // Game is responsible for handling a game between 2 players
 type Game struct {
-	player1         Player
-	player2         Player
+	player1 Player
+	player2 Player
 }
 
 func DisconnectGame(game Game) {
@@ -96,7 +97,7 @@ func sendQuestionsAndReceiveAnswers(
 	answerChannel chan Answer,
 ) {
 	msgToSend := func(question Question) string {
-		return "Question " + strconv.Itoa(question.questionNumber) + ": " + question.question + " 1)" + question.options[0] + " 2)" + question.options[1] + " 3)" + question.options[2]
+		return "Question " + strconv.Itoa(question.questionNumber) + ": " + question.questionStr + " 1)" + question.options[0] + " 2)" + question.options[1] + " 3)" + question.options[2]
 	}
 
 	for question := range questionsChannel {
@@ -125,9 +126,9 @@ func notifyWinner(player1 Player, player2 Player) {
 
 	switch {
 	case player1.points > player2.points:
-		notifyGameResult("Player "+ player1.name +" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
+		notifyGameResult("Player "+player1.name+" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
 	case player2.points > player1.points:
-		notifyGameResult("Player "+ player2.name +" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
+		notifyGameResult("Player "+player2.name+" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
 	default:
 		notifyGameResult("Game tied! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
 	}
