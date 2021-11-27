@@ -11,4 +11,5 @@ const (
 	OptionThree            = "3"
 	CloseConnectionCommand = "STOP"
 	Success                = "OK"
+	ReadyToPlay            = "READY"
 )
