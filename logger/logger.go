@@ -18,5 +18,7 @@ func LogInfo(a ...interface{}) {
 }
 
 func PrintMessageReceived(msg string) {
-	fmt.Println("->: " + msg)
+	colorCyan := "\033[36m"
+	colorReset := "\033[0m"
+	fmt.Println(string(colorCyan), "->: "+msg, string(colorReset))
 }
