@@ -31,4 +31,7 @@ const (
 	CloseConnectionCommand = "STOP"
 	Success                = "OK"
 	ReadyToPlay            = "LISTO"
+
+	DisconnectAndExitMessage = "Server disconnected. Client exiting..."
+	ExitMessage              = "Client exiting..."
 )

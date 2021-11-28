@@ -23,12 +23,12 @@ func HandshakeClient(currentSocket net.Conn) bool {
 		promptReader := bufio.NewReader(os.Stdin)
 		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
-			logger.LogInfo("Server disconnected. Client exiting...")
+			logger.LogInfo(common.DisconnectAndExitMessage)
 			return false
 		}
 
 		if messageFromServer == CloseConnectionCommand {
-			logger.LogInfo("Client exiting...")
+			logger.LogInfo(common.ExitMessage)
 
 			return false
 		}
@@ -38,14 +38,14 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux, err := common.Receive(currentSocket)
 			if err != nil {
-				logger.LogInfo("Server disconnected. Client exiting...")
+				logger.LogInfo(common.DisconnectAndExitMessage)
 				return false
 			}
 			logger.PrintMessageReceived(messageFromServerAux)
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux2, err := common.Receive(currentSocket)
 			if err != nil {
-				logger.LogInfo("Server disconnected. Client exiting...")
+				logger.LogInfo(common.DisconnectAndExitMessage)
 				return false
 			}
 			logger.PrintMessageReceived(messageFromServerAux2)
@@ -55,7 +55,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux, err := common.Receive(currentSocket)
 			if err != nil {
-				logger.LogInfo("Server disconnected. Client exiting...")
+				logger.LogInfo(common.DisconnectAndExitMessage)
 				return false
 			}
 			logger.PrintMessageReceived(messageFromServerAux)
@@ -68,7 +68,8 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			common.Send(currentSocket, common.Success)
 
 		} else {
-			fmt.Print(">> ")
+			colorBlue := "\033[34m"
+			fmt.Print(string(colorBlue), ">> ")
 			textFromPrompt, _ := promptReader.ReadString('\n')
 			common.Send(currentSocket, textFromPrompt)
 		}
