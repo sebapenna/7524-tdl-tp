@@ -40,7 +40,7 @@ func RunStartGameAction(game Game) {
 
 func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) {
 	msgToSend := func(playerName string) string {
-		return "You are playing against player " + playerName + ". Enter READY when ready to play"
+		return common.MatchingPlayerMessage + playerName + common.ReadyToPlayMessage
 	}
 
 	var playerIsReady bool
