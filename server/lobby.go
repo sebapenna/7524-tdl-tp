@@ -2,6 +2,7 @@ package server
 
 import (
 	"net"
+
 	"github.com/sebapenna/7524-tdl-tp/logger"
 )
 
@@ -28,7 +29,6 @@ func RunLobby(lobby Lobby) {
 			logger.LogInfo("Server shutdown")
 			return
 		}
-
 		/* Create new player and save it into the already existing ones */
 		newPlayer := Player{id: len(lobby.players) + 1, socket: currentSocket, channelPlayersReadyToPlay: channel}
 		lobby.players = append(lobby.players, newPlayer)
@@ -60,7 +60,6 @@ func CreateGames(channelPlayersReadyToPlay chan Player) {
 func ShutdownLobby(lobby Lobby) {
 	/* Close socket receiving connections */
 	lobby.listenSocket.Close()
-
 	/* Disconnect every player */
 	for i := range lobby.players {
 		DisconnectPlayer(lobby.players[i])

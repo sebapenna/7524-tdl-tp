@@ -40,7 +40,7 @@ func RunPlayerAction(player Player) {
 }
 
 func RequestPlayerName(player *Player) {
-	common.Send(player.socket, "Please enter a name to play: ")
+	common.Send(player.socket, common.AskForNameMessage)
 	playerName, err := common.Receive(player.socket)
 
 	player.name = playerName

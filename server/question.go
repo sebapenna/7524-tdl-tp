@@ -10,152 +10,85 @@ type Question struct {
 func CreateRandomQuestions() []Question {
 	questions := []Question{
 		{
-			questionStr:   "How many permanent teeth does a dog have?",
-			options:       []string{"42", "40", "36"},
-			correctOption: 1},
+			questionStr:   "Al aprobar la cursada de una materia cuantos cuatrimestres tiene uno para poder rendir el final ?",
+			options:       []string{"1", "6", "3"},
+			correctOption: 3},
 		{
-			questionStr:   "How many chukkers are there in a polo match?",
-			options:       []string{"7", "6", "8"},
+			questionStr:   "Al aprobar la cursada de una materia cuantas posibilidades tengo para rendir el final? ",
+			options:       []string{"1", "3", "Depende de cada profesor"},
 			correctOption: 2},
 		{
-			questionStr:   "On average, how far away is the moon from the earth?",
-			options:       []string{"384.400 km", "450.200 km", "285.700"},
-			correctOption: 1},
-		{
-			questionStr:   "Complete this Spice Girls lyric: “If you wanna be my [...], you gotta get with my friends”",
-			options:       []string{"husband", "friend", "lover"},
+			questionStr:   "Segun la reciente actualización del plan de estudios de Ingeniería Informatica , Cuál de las siguientes materias no fue sacada como obligatoria para la carrera? ",
+			options:       []string{"Quimica", "Analisis Matematico III", "Fisica II"},
 			correctOption: 3},
 		{
-			questionStr:   "In what decade was pop icon Madonna born?",
-			options:       []string{"60s", "50s", "70s"},
+			questionStr:   "Segun las encuestas del departamento de computación , cual de las siguientes cátedras de la materia Algoritmos y Programación II es la mas elegida por los estudiantes al momento de inscribirse? ",
+			options:       []string{"Calvo", "Mendez", "Juarez"},
 			correctOption: 2},
 		{
-			questionStr:   "Which European city hosted the 1936 Summer Olympics?",
-			options:       []string{"Berlin", "Madrid", "London"},
-			correctOption: 1},
-		{
-			questionStr:   "Which country won the 1994 FIFA World Cup?",
-			options:       []string{"France", "Germany", "Brazil"},
+			questionStr:   "Segun el calendario académico , cuantas semanas hay para rendir finales ? ",
+			options:       []string{"2", "4", "7"},
 			correctOption: 3},
 		{
-			questionStr:   "What is the capital city of Australia?",
-			options:       []string{"Sydney", "Canberra", "Melbourne"},
+			questionStr:   "Que es lo que se conoce como ‘Prioridad’?  ",
+			options:       []string{"Una materia", "Un numero que indica el orden en que los estudiantes pueden inscribirse favoreciendo así a los que mejor prioridad tienen a conseguir cupo en las mejores cátedras", "Ninguna de las anteriores es correcta"},
 			correctOption: 2},
 		{
-			questionStr:   "Which US state was Donald Trump born in?",
-			options:       []string{"Texas", "California", "New York"},
-			correctOption: 3},
-		{
-			questionStr:   "What is the capital of Finland?",
-			options:       []string{"Helsinki", "Copenhagen", "Stockholm"},
-			correctOption: 1},
-		{
-			questionStr:   "What language is spoken in Brazil?",
-			options:       []string{"Spanish", "Portuguese", "English"},
+			questionStr:   "Quien tiene mejor prioridad ? ",
+			options:       []string{"Aquel alumno con un numero lo mas grande posible", "Aquel alumno con un numero lo mas pequeño  posible", "Depende"},
 			correctOption: 2},
 		{
-			questionStr:   "What temperature centigrade does water boil at?",
-			options:       []string{"100", "80", "75"},
-			correctOption: 1},
-		{
-			questionStr:   "How many notes are there in a musical scale?",
-			options:       []string{"7", "6", "5"},
-			correctOption: 1},
-		{
-			questionStr:   "What in the animal kingdom is a doe?",
-			options:       []string{"A female donkey", "A female horse", "A female deer"},
-			correctOption: 3},
-		{
-			questionStr:   "What is the busiest airport in Britain called?",
-			options:       []string{"Luton", "Heathrow", "Gatwick"},
+			questionStr:   "Que significa estar como alumno ‘condicional’ en una materia ?  ",
+			options:       []string{"Que no vas a poder cursar la materia", "Que como todas las cátedras habían llenado sus cupos , el departamento de computación te asigna una cátedra aleatoria", "Que todavía no aprobaste el final de la materia"},
 			correctOption: 2},
 		{
-			questionStr:   "Who is next in line to the British throne after Queen Elizabeth II?",
-			options:       []string{"Prince Charles", "Prince Williams", "Prince Harry"},
+			questionStr:   "En el ámbito de la informática cual fue el plan que se actualizo recientemente ? ",
+			options:       []string{"El Plan de Ingeniería informática", "EL plan de la licenciatura en sistemas", "Ambos"},
 			correctOption: 1},
 		{
-			questionStr:   "What was the first single to be released by the band Oasis?",
-			options:       []string{"Don’t Believe The Truth", "Dig Out Your Soul", "Supersonic"},
+			questionStr:   "En donde se encuentra la FIUBA ? ",
+			options:       []string{"Av. Paseo Colón 850", "Av. Gral. Las Heras 2214", "Ninguna de las anteriores es correcta"},
+			correctOption: 1},
+		{
+			questionStr:   "Cual es el horario en el que suelen cursarse las materias informáticas?  ",
+			options:       []string{"A la mañana ", "Al mediodia", "A la noche"},
 			correctOption: 3},
 		{
-			questionStr:   "In which year did the original UK version of The Office air?",
-			options:       []string{"2016", "2001", "2010"},
+			questionStr:   "Cual es la catedra preferida por lo alumnos al momento de cursar física I ? ",
+			options:       []string{"Fontana", "Cornejo", "Garea"},
+			correctOption: 1},
+		{
+			questionStr:   "Segun el plan de ingeniería informática cual es la duración de dicha carrera ? ",
+			options:       []string{"2", "4", "6"},
+			correctOption: 3},
+		{
+			questionStr:   "De acuerdo con las estadísticas de la facultad, en cuanto tiempo logra recibirse el estudiante promedio de ingeniería informática??",
+			options:       []string{"4", "6", "9"},
+			correctOption: 3},
+		{
+			questionStr:   " Que es el SIU guarani  ?",
+			options:       []string{"El sistema de autogestion de la facultad", "Un aula de la facultad", "Una lengua indigena"},
+			correctOption: 1},
+		{
+			questionStr:   "Generalmente cuando son las inscripciones a las materias ?",
+			options:       []string{"2 Semanas antes del comienzo de clases ", "1 Semana antes del comienzo de clases", "5 semanas antes del comienzo de clases"},
 			correctOption: 2},
 		{
-			questionStr:   "Glossectomy is the removal of all of or part of which body part?",
-			options:       []string{"The tongue", "The lungs", "A finger"},
+			questionStr:   "Si apruebo el final de una materia donde puedo encontrar la nota en el sistema ? ",
+			options:       []string{"En inscripciones a materias", "En inscripciones a exámenes", "En actuación provisoria"},
+			correctOption: 3},
+		{
+			questionStr:   "Cual es la catedra preferida por los estudiantes al momento de cursar algebra II?",
+			options:       []string{"Grynberg", "Lopez", "Alvarez"},
 			correctOption: 1},
 		{
-			questionStr:   "How many elements are in the periodic table?",
-			options:       []string{"133", "125", "118"},
-			correctOption: 3},
-		{
-			questionStr:   "Which planet has the most moons?",
-			options:       []string{"Jupiter", "Saturn", "Neptune"},
-			correctOption: 2},
-		{
-			questionStr:   "Where is the smallest bone in the human body located?",
-			options:       []string{"Leg", "Nose", "Ear"},
-			correctOption: 3},
-		{
-			questionStr:   "In which year was the Nintendo 64 released in Europe?",
-			options:       []string{"1997", "1995", "1999"},
+			questionStr:   "Segun el plan de estudios de Ing Informatica, cual de las siguientes materias no es correlativa de la materia Teoria de lenguaje ?  ",
+			options:       []string{"Algoritmos y Programación II", "Algoritmos y Programación I", "Fisica II"},
 			correctOption: 1},
 		{
-			questionStr:   "Elon Musk is the CEO of which global brand.",
-			options:       []string{"Facebook", "Amazon", "Tesla"},
+			questionStr:   "Que pasa si me anoto en una materia y luego decido no cursarla? ",
+			options:       []string{"Te afecta el promedio", "Por 2 cuartrimestres no te podes volver a anotar", "Nada"},
 			correctOption: 3},
-		{
-			questionStr:   "In which year did Taylor Swift release her debut single, Love Story?",
-			options:       []string{"2008", "2012", "2019"},
-			correctOption: 1},
-		{
-			questionStr:   "Who is the eldest Weasley sibling in Harry Potter?",
-			options:       []string{"Bill Weasley", "Ron Weasly", "Fred Weasley"},
-			correctOption: 1},
-		{
-			questionStr:   "How many Pirates of the Caribbean films have been released?",
-			options:       []string{"4", "5", "6"},
-			correctOption: 2},
-		{
-			questionStr:   "In Monsters Inc. what is Sulley’s full name?",
-			options:       []string{"George P. Sullivan", "James P. Sullivan", "John P. Sullivan"},
-			correctOption: 2},
-		{
-			questionStr:   "Who discovered penicillin?",
-			options:       []string{"Hermann Joseph Muller", "Marie Curie", "Alexander Fleming"},
-			correctOption: 3},
-		{
-			questionStr:   "Which year did the European Union first introduce the Euro as currency?",
-			options:       []string{"1999", "2003", "2001"},
-			correctOption: 1},
-		{
-			questionStr:   "Which English Football League team holds the nickname The Cobblers?",
-			options:       []string{"Chelsea", "Northampton Town", "Tottenhan Hotspurs"},
-			correctOption: 2},
-		{
-			questionStr:   "Who scored the fastest goal in Premier League history after just 7.69 seconds?",
-			options:       []string{"Cristiano Ronaldo", "Shane Long", "Wayne Rooney"},
-			correctOption: 2},
-		{
-			questionStr:   "How many Grand Slam singles titles has Serena Williams won?",
-			options:       []string{"23", "18", "29"},
-			correctOption: 1},
-		{
-			questionStr:   "How many Grand Slam titles has Andy Murray won?",
-			options:       []string{"4", "5", "3"},
-			correctOption: 3},
-		{
-			questionStr:   "Where was Frida Kahlo born?",
-			options:       []string{"El Salvador", "Costa Rica", "Mexico"},
-			correctOption: 3},
-		{
-			questionStr:   "What is the capital of Bulgaria?",
-			options:       []string{"Bucarest", "Budapest", "Sofia"},
-			correctOption: 3},
-		{
-			questionStr:   "What is the official name of the clock tower commonly referred to as Big Ben?",
-			options:       []string{"Elizabeth Tower", "Westminster Tower", "King's Cross Tower"},
-			correctOption: 1}}
+	}
 	return questions
 }
