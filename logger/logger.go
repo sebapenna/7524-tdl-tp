@@ -14,7 +14,7 @@ func LogErrorMessage(msg string) {
 }
 
 func LogInfo(a ...interface{}) {
-	fmt.Println(a)
+	fmt.Println(a...)
 }
 
 func PrintMessageReceived(msg string) {
