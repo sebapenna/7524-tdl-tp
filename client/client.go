@@ -36,7 +36,7 @@ func RunClient(connection string) {
 
 // Runs Client actions in game
 func runClientGameLoop(currentSocket net.Conn) {
-	reader := bufio.NewReader(os.Stdin)
+	promptReader := bufio.NewReader(os.Stdin)
 	for {
 
 		messageFromServer, err := common.Receive(currentSocket)
@@ -52,7 +52,7 @@ func runClientGameLoop(currentSocket net.Conn) {
 
 		logger.PrintMessageReceived(messageFromServer)
 		fmt.Print(">> ")
-		textFromPrompt, _ := reader.ReadString('\n')
+		textFromPrompt, _ := promptReader.ReadString('\n')
 
 		if textFromPrompt == common.CloseConnectionCommand {
 			logger.LogInfo("Client exiting...")
