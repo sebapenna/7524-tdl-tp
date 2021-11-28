@@ -98,7 +98,7 @@ func sendQuestionsAndReceiveAnswers(
 	answerChannel chan Answer,
 ) {
 	msgToSend := func(question Question) string {
-		return "Question " + strconv.Itoa(question.questionNumber) + ": " + question.questionStr + " 1)" + question.options[0] + " 2)" + question.options[1] + " 3)" + question.options[2]
+		return "Pregunta " + strconv.Itoa(question.questionNumber) + ": " + question.questionStr + " 1)" + question.options[0] + " 2)" + question.options[1] + " 3)" + question.options[2]
 	}
 
 	for question := range questionsChannel {
@@ -127,11 +127,11 @@ func notifyWinner(player1 Player, player2 Player) {
 
 	switch {
 	case player1.points > player2.points:
-		notifyGameResult("Player "+player1.name+" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
+		notifyGameResult(common.PlayerMessage+player1.name+common.WinnerMessage, player1, player2)
 	case player2.points > player1.points:
-		notifyGameResult("Player "+player2.name+" won! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
+		notifyGameResult(common.PlayerMessage+player2.name+common.WinnerMessage, player1, player2)
 	default:
-		notifyGameResult("Game tied! Thanks for playing FIUBADOS! Press any key to exit", player1, player2)
+		notifyGameResult(common.TieMessage, player1, player2)
 	}
 }
 
