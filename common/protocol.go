@@ -1,11 +1,11 @@
 package common
 
 const (
-	WelcomeMessage   = "Welcome to FIUBADOS: "
-	ObjectiveMessage = "The objective of this game is to introduce students entering the faculty in various administrative issues of how it works, being in the future very useful for the development of their career."
-	MainMenuOptions  = "(1) Play  (2) Help  (3) Exit"
+	WelcomeMessage   = "Bienvenidos a  FIUBADOS: "
+	ObjectiveMessage = "El objetivo de este juego es introducir a los alumnos que ingresan a la facultad en diversas cuestiones administrativas de su funcionamiento, siendo en el futuro muy útil para el desarrollo de su carrera profesional."
+	MainMenuOptions  = "(1) Jugar  (2) Ayuda  (3) Salir"
 
-	HelpMessage     = "This game consists of 10 multiple choice questions. Each player will answer the number of the option chosen. If the first player to answer does it correctly gets the point, if not the other player does. At the end of the game, the player with the highest score wins. Good Luck!"
+	HelpMessage     = "Este juego consta de 10 preguntas de opción múltiple. Cada jugador contestará el número de la opción elegida. Si el primer jugador en contestar lo hace correctamente se lleva el punto, si no lo hace el otro jugador. Al final del juego, el jugador con la mayor puntuación gana. ¡Buena suerte!"
 	HelpMenuOptions = "(1) Back to Main Menu"
 
 	SearchingMatchMessage = "Finding Match: Looking for players..."
