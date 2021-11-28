@@ -18,6 +18,12 @@ const (
 	MatchingPlayerMessage = "Está jugando contra el jugador: "
 	ReadyToPlayMessage    = ". Introduzca LISTO cuando esté listo para jugar"
 
+	QuestionMessage = "Pregunta "
+	ColonMessage    = ": "
+	FirstOption     = " 1)"
+	SecondOption    = " 2)"
+	ThirdOption     = " 3)"
+
 	PlayerMessage = "Jugador "
 	WinnerMessage = " ha ganado! ¡Gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"
 	TieMessage    = "¡Juego empatado! ¡Gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"

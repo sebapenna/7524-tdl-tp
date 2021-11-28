@@ -98,7 +98,7 @@ func sendQuestionsAndReceiveAnswers(
 	answerChannel chan Answer,
 ) {
 	msgToSend := func(question Question) string {
-		return "Pregunta " + strconv.Itoa(question.questionNumber) + ": " + question.questionStr + " 1)" + question.options[0] + " 2)" + question.options[1] + " 3)" + question.options[2]
+		return common.QuestionMessage + strconv.Itoa(question.questionNumber) + common.ColonMessage + question.questionStr + common.FirstOption + question.options[0] + common.SecondOption + question.options[1] + common.ThirdOption + question.options[2]
 	}
 
 	for question := range questionsChannel {
