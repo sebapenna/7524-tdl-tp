@@ -203,10 +203,13 @@ func readAnswersAndDistributePoints(
 		}
 	}
 
-	if answer1.optionChosen == questionAsked.correctOption {
-		answer1.player.points++
-	} else {
+	if answer1.optionChosen == questionAsked.correctOption && answer2.optionChosen == questionAsked.correctOption{
+		answer1.player.points = answer1.player.points + 3
 		answer2.player.points++
+	} else if answer1.optionChosen == questionAsked.correctOption && answer2.optionChosen != questionAsked.correctOption{
+		answer1.player.points = answer1.player.points + 3
+	} else if answer1.optionChosen != questionAsked.correctOption && answer2.optionChosen == questionAsked.correctOption{
+		answer2.player.points = answer2.player.points + 3
 	}
 }
 
