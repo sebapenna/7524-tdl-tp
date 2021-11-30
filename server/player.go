@@ -18,6 +18,8 @@ type Player struct {
 	socket                    net.Conn
 	points                    int
 	channelPlayersReadyToPlay chan<- Player
+	lastAnswerWasCorrect      bool
+	wasFirstToAnswerCorrectly bool
 }
 
 // DisconnectPlayer Closes the connection of the current's
