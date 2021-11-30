@@ -20,9 +20,9 @@ const (
 
 	QuestionMessage = "Pregunta "
 	ColonMessage    = ": "
-	FirstOption     = " 1)"
-	SecondOption    = " 2)"
-	ThirdOption     = " 3)"
+	FirstOption     = " (1)"
+	SecondOption    = " (2)"
+	ThirdOption     = " (3)"
 
 	CorrectAnswerMessage               = "Respuesta correcta! "
 	WasFirstToAnswerMessage            = "Respondiste de primero! Recibes 3 puntos adicionales. "

@@ -277,15 +277,15 @@ func getMessagesToSendAccordingToWhoeverAnsweredCorrectlyOrNot(player1, player2 
 
 	} else if player1.lastAnswerWasCorrect && !player2.lastAnswerWasCorrect {
 		messageToSendPlayer1 = common.CorrectAnswerMessage + common.OpponentAnsweredIncorrectlyMessage
-		messageToSendPlayer2 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + " " + questionAsked.options[questionAsked.correctOption-1]
+		messageToSendPlayer2 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + ") " + questionAsked.options[questionAsked.correctOption-1]
 
 	} else if !player1.lastAnswerWasCorrect && player2.lastAnswerWasCorrect {
-		messageToSendPlayer1 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + " " + questionAsked.options[questionAsked.correctOption-1]
+		messageToSendPlayer1 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + ") " + questionAsked.options[questionAsked.correctOption-1]
 		messageToSendPlayer2 = common.CorrectAnswerMessage + common.OpponentAnsweredIncorrectlyMessage
 
 	} else { //Both answered incorrectly
-		messageToSendPlayer1 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + " " + questionAsked.options[questionAsked.correctOption-1]
-		messageToSendPlayer2 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + " " + questionAsked.options[questionAsked.correctOption-1]
+		messageToSendPlayer1 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + ") " + questionAsked.options[questionAsked.correctOption-1]
+		messageToSendPlayer2 = common.IncorrectAnswerMessage + common.WhichWasCorrectAnswerMessage + strconv.Itoa(questionAsked.correctOption) + ") " + questionAsked.options[questionAsked.correctOption-1]
 
 	}
 
