@@ -102,15 +102,19 @@ func sendQuestionsAndReceiveAnswers(
 	}
 
 	for question := range questionsChannel {
-		common.Send(player.socket, msgToSend(question))
-		optionChosen, err := common.Receive(player.socket)
+		var opt = 0
+		for opt != 1 && opt != 2 && opt != 3 {
+			common.Send(player.socket, msgToSend(question))
+			optionChosen, err := common.Receive(player.socket)
 
-		// todo: si hay un error hay que desconectar a los 2
-		if err != nil {
-			logger.LogError(err)
+			// todo: si hay un error hay que desconectar a los 2
+			if err != nil {
+				logger.LogError(err)
+			}
+
+			opt, _ = strconv.Atoi(optionChosen)
 		}
 
-		opt, _ := strconv.Atoi(optionChosen)
 		answerChannel <- Answer{
 			player:       player,
 			question:     question,
