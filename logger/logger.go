@@ -9,8 +9,8 @@ func LogError(e error) {
 	_, _ = fmt.Fprintln(os.Stderr, e)
 }
 
-func LogErrorMessage(msg string) {
-	_, _ = fmt.Fprintln(os.Stderr, msg)
+func LogErrorMessage(a ...interface{}) {
+	_, _ = fmt.Fprintln(os.Stderr, a)
 }
 
 func LogInfo(a ...interface{}) {

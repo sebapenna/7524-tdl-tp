@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	GameDuration = 10
+	GameDuration = 3
 )
 
 // Game is responsible for handling a game between 2 players
@@ -92,10 +92,16 @@ type Answer struct {
 	optionChosen int
 }
 
+type PlayerError struct {
+	player *Player
+	err    error
+}
+
 func sendQuestionsAndReceiveAnswers(
 	player *Player,
 	questionsChannel chan Question,
 	answerChannel chan Answer,
+	errorChannel chan PlayerError,
 ) {
 	msgToSend := func(question Question) string {
 		return common.QuestionMessage + strconv.Itoa(question.questionNumber) + common.ColonMessage + question.questionStr + common.FirstOption + question.options[0] + common.SecondOption + question.options[1] + common.ThirdOption + question.options[2]
@@ -104,12 +110,19 @@ func sendQuestionsAndReceiveAnswers(
 	for question := range questionsChannel {
 		var opt = 0
 		for opt != 1 && opt != 2 && opt != 3 {
-			common.Send(player.socket, msgToSend(question))
-			optionChosen, err := common.Receive(player.socket)
+			errSend := common.Send(player.socket, msgToSend(question))
+			if errSend != nil {
+				logger.LogError(errSend)
+				errorChannel <- PlayerError{player, errSend}
+				return
+			}
 
-			// todo: si hay un error hay que desconectar a los 2
-			if err != nil {
-				logger.LogError(err)
+			optionChosen, errReceive := common.Receive(player.socket)
+
+			if errReceive != nil {
+				logger.LogError(errReceive)
+				errorChannel <- PlayerError{player, errReceive}
+				return
 			}
 
 			opt, _ = strconv.Atoi(optionChosen)
@@ -139,37 +152,95 @@ func notifyWinner(player1 Player, player2 Player) {
 	}
 }
 
+func notifyOtherPlayerDisconnected(player Player) {
+	common.Send(player.socket, common.OtherPlayerDisconnectedMessage)
+}
+
+// Handles player error
+// Notifies the player that did not disconnect
+// that it was the winner and then also disconnects it
+func handlePlayerDisconnected(
+	playerError PlayerError,
+	player1 Player,
+	player2 Player,
+) {
+	if playerError.player.id == player1.id {
+		notifyOtherPlayerDisconnected(player2)
+		DisconnectPlayer(player2)
+	} else {
+		notifyOtherPlayerDisconnected(player1)
+		DisconnectPlayer(player1)
+	}
+}
+
+// Reads the answers of every player
+// and distributes the points based
+// on them.
+// Also checks if any error raises while
+// players should have answered
+func readAnswersAndDistributePoints(
+	answersChannel chan Answer,
+	errorChannel chan PlayerError,
+	player1 *Player,
+	player2 *Player,
+	questionAsked Question,
+) {
+	// Create a loop to wait for both answers
+	// but also keep checking if any error
+	// raised in any player connection
+	var answer1, answer2 Answer
+	for questionAnswered := 0; questionAnswered < 2; questionAnswered++ {
+		select {
+		case playerError := <-errorChannel:
+			handlePlayerDisconnected(playerError, *player1, *player2)
+			return
+		case answer := <-answersChannel:
+			if questionAnswered == 0 {
+				answer1 = answer // Save first answer received
+			} else {
+				answer2 = answer // Save second answer received
+			}
+		}
+	}
+
+	if answer1.optionChosen == questionAsked.correctOption {
+		answer1.player.points++
+	} else {
+		answer2.player.points++
+	}
+}
+
 func runGameLoop(player1 Player, player2 Player) {
 	questionsChannel1 := make(chan Question)
 	questionsChannel2 := make(chan Question)
 	answersChannel := make(chan Answer)
+	errorChannel := make(chan PlayerError)
 	defer close(questionsChannel1)
 	defer close(questionsChannel2)
 	defer close(answersChannel)
 
-	go sendQuestionsAndReceiveAnswers(&player1, questionsChannel1, answersChannel)
-	go sendQuestionsAndReceiveAnswers(&player2, questionsChannel2, answersChannel)
+	go sendQuestionsAndReceiveAnswers(&player1, questionsChannel1, answersChannel, errorChannel)
+	go sendQuestionsAndReceiveAnswers(&player2, questionsChannel2, answersChannel, errorChannel)
 
 	questions := CreateRandomQuestions()
 
 	rand.Seed(time.Now().UnixNano()) // Set random seed to randomize questions
 	for i := 1; i <= GameDuration; i++ {
-		randomQuestion := rand.Intn(len(questions))
-		questionToAsk := questions[randomQuestion]
+		select {
+		case playerError := <-errorChannel:
+			handlePlayerDisconnected(playerError, player1, player2)
+			return
+		default:
+			randomQuestion := rand.Intn(len(questions))
+			questionToAsk := questions[randomQuestion]
 
-		questions[randomQuestion] = questions[len(questions)-1]
-		questions = questions[:len(questions)-1]
-		questionToAsk.questionNumber = i
-		questionsChannel1 <- questionToAsk
-		questionsChannel2 <- questionToAsk
+			questions[randomQuestion] = questions[len(questions)-1]
+			questions = questions[:len(questions)-1]
+			questionToAsk.questionNumber = i
+			questionsChannel1 <- questionToAsk
+			questionsChannel2 <- questionToAsk
 
-		answer1 := <-answersChannel
-		answer2 := <-answersChannel
-
-		if answer1.optionChosen == questionToAsk.correctOption {
-			answer1.player.points++
-		} else {
-			answer2.player.points++
+			readAnswersAndDistributePoints(answersChannel, errorChannel, &player1, &player2, questionToAsk)
 		}
 	}
 
