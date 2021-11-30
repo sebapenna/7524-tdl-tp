@@ -25,9 +25,9 @@ const (
 	ThirdOption     = " 3)"
 
 	CorrectAnswerMessage               = "Respuesta correcta! "
-	WasFirstToAnswerMessage            = "Respondiste de primero! Recibes 3 puntos adicionales"
-	WasSecondToAnswerMessage           = "Respondiste de segundo! Recibes solo 1 punto"
-	OpponentAnsweredIncorrectlyMessage = "Tu contrincante respondió incorrectamente, te llevas 3 puntos adicionales"
+	WasFirstToAnswerMessage            = "Respondiste de primero! Recibes 3 puntos adicionales. "
+	WasSecondToAnswerMessage           = "Respondiste de segundo! Recibes solo 1 punto. "
+	OpponentAnsweredIncorrectlyMessage = "Tu contrincante respondió incorrectamente, te llevas 3 puntos adicionales. "
 	IncorrectAnswerMessage             = "Respuesta incorrecta! "
 	WhichWasCorrectAnswerMessage       = "La respuesta correcta era: ("
 

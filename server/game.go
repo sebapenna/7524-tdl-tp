@@ -207,7 +207,7 @@ func readAnswersAndDistributePoints(
 		answer1.player.points += 3
 		answer2.player.points++
 		answer1.player.wasFirstToAnswerCorrectly = true
-		answer1.player.wasFirstToAnswerCorrectly = false
+		answer2.player.wasFirstToAnswerCorrectly = false
 		answer1.player.lastAnswerWasCorrect = true
 		answer2.player.lastAnswerWasCorrect = true
 
