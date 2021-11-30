@@ -206,11 +206,67 @@ func readAnswersAndDistributePoints(
 	if answer1.optionChosen == questionAsked.correctOption && answer2.optionChosen == questionAsked.correctOption{
 		answer1.player.points = answer1.player.points + 3
 		answer2.player.points++
+		answer1.player.lastAnswerCorrect = true;
+		answer2.player.lastAnswerCorrect = true;
 	} else if answer1.optionChosen == questionAsked.correctOption && answer2.optionChosen != questionAsked.correctOption{
 		answer1.player.points = answer1.player.points + 3
+		answer1.player.lastAnswerCorrect = true;
+		answer2.player.lastAnswerCorrect = false;
 	} else if answer1.optionChosen != questionAsked.correctOption && answer2.optionChosen == questionAsked.correctOption{
 		answer2.player.points = answer2.player.points + 3
+		answer1.player.lastAnswerCorrect = false;
+		answer2.player.lastAnswerCorrect = true;
+	} else {
+	    answer1.player.lastAnswerCorrect = false;
+		answer2.player.lastAnswerCorrect = false;
 	}
+}
+
+func showCorrectAnswer(player1 Player, player2 Player, questionAsked Question) error {
+    readyToContinueChannel := make(chan bool)
+    messageToSendPlayer1 := ""
+    messageToSendPlayer2 := ""
+
+    if player1.lastAnswerCorrect {
+        messageToSendPlayer1 = "Respuesta correcta!"
+    } else {
+        messageToSendPlayer1 = "Respuesta incorrecta! La respuesta correcta era: (" + strconv.Itoa(questionAsked.correctOption)
+    }
+    if player2.lastAnswerCorrect {
+        messageToSendPlayer2 = "Respuesta correcta!"
+    } else {
+        messageToSendPlayer2 = "Respuesta incorrecta! La respuesta correcta era: (" + strconv.Itoa(questionAsked.correctOption)
+    }
+    messageToSendPlayer1+= " Presiona ENTER para continuar"
+    messageToSendPlayer2+= " Presiona ENTER para continuar"
+
+    go readyToContinue(player1, messageToSendPlayer1, readyToContinueChannel)
+    go readyToContinue(player2, messageToSendPlayer2, readyToContinueChannel)
+
+    playersReady := 0
+	for {
+		ready := <-readyToContinueChannel
+		if !ready {
+			return errors.New("Player disconnected during the game")
+		}
+		playersReady++
+		if playersReady == 2 {
+			break
+		}
+	}
+	return nil
+}
+
+func readyToContinue(player Player, messageToSend string, readyToContinueChannel chan bool) {
+    common.Send(player.socket, messageToSend)
+    msg, err := common.Receive(player.socket)
+    if err != nil {
+        logger.LogError(err)
+        readyToContinueChannel <- false // Error in connection, return error
+        return
+    }
+    logger.LogInfo("Player " + strconv.Itoa(player.id) + " send: " + msg)
+    readyToContinueChannel <- true
 }
 
 func runGameLoop(player1 Player, player2 Player) {
@@ -244,6 +300,7 @@ func runGameLoop(player1 Player, player2 Player) {
 			questionsChannel2 <- questionToAsk
 
 			readAnswersAndDistributePoints(answersChannel, errorChannel, &player1, &player2, questionToAsk)
+			showCorrectAnswer(player1, player2, questionToAsk)
 		}
 	}
 
