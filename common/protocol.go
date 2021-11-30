@@ -24,9 +24,10 @@ const (
 	SecondOption    = " 2)"
 	ThirdOption     = " 3)"
 
-	PlayerMessage = "Jugador "
-	WinnerMessage = " ha ganado! ¡Gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"
-	TieMessage    = "¡Juego empatado! ¡Gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"
+	PlayerMessage                  = "Jugador "
+	WinnerMessage                  = " ha ganado! ¡Gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"
+	TieMessage                     = "¡Juego empatado! ¡Gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"
+	OtherPlayerDisconnectedMessage = "El otro jugador se desconectó ¡Ganaste, gracias por jugar a FIUBADOS! Pulsa cualquier tecla para salir"
 
 	CloseConnectionCommand = "STOP"
 	Success                = "OK"

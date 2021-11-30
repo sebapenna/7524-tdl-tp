@@ -12,6 +12,7 @@ func Receive(connectionSocket net.Conn) (string, error) {
 	return strings.TrimSpace(str), err
 }
 
-func Send(connectionSocket net.Conn, text string) {
-	fmt.Fprintf(connectionSocket, text+"\n")
+func Send(connectionSocket net.Conn, text string) error {
+	_, err := fmt.Fprintf(connectionSocket, text+"\n")
+	return err
 }
