@@ -24,13 +24,20 @@ func RunClient(connection string) {
 		logger.LogError(err)
 		return
 	}
-	defer currentSocket.Close()
+	defer func() {
+		err := recover()
+		currentSocket.Close()
+		if err != nil {
+			logger.LogInfo(err)
+		}
+	}()
 
 	continueGame := server.HandshakeClient(currentSocket)
 
 	if continueGame == false {
 		return
 	}
+
 	runClientGameLoop(currentSocket)
 }
 
@@ -43,7 +50,7 @@ func runClientGameLoop(currentSocket net.Conn) {
 		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
 			logger.LogInfo(common.DisconnectAndExitMessage)
-			return
+			panic(err)
 		}
 
 		if messageFromServer == common.CloseConnectionCommand {

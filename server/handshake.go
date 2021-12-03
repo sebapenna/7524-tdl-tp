@@ -24,7 +24,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 		messageFromServer, err := common.Receive(currentSocket)
 		if err != nil {
 			logger.LogInfo(common.DisconnectAndExitMessage)
-			return false
+			panic(err)
 		}
 
 		if messageFromServer == CloseConnectionCommand {
@@ -39,14 +39,14 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			messageFromServerAux, err := common.Receive(currentSocket)
 			if err != nil {
 				logger.LogInfo(common.DisconnectAndExitMessage)
-				return false
+				panic(err)
 			}
 			logger.PrintMessageReceived(messageFromServerAux)
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux2, err := common.Receive(currentSocket)
 			if err != nil {
 				logger.LogInfo(common.DisconnectAndExitMessage)
-				return false
+				panic(err)
 			}
 			logger.PrintMessageReceived(messageFromServerAux2)
 
@@ -56,7 +56,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			messageFromServerAux, err := common.Receive(currentSocket)
 			if err != nil {
 				logger.LogInfo(common.DisconnectAndExitMessage)
-				return false
+				panic(err)
 			}
 			logger.PrintMessageReceived(messageFromServerAux)
 
