@@ -39,10 +39,12 @@ func RunStartGameAction(game Game) {
 	runGameLoop(game.player1, game.player2)
 }
 
+
 type ReadyToPlayCounter struct {
     mu       sync.Mutex
     counter  int
 }
+
 
 func (c *ReadyToPlayCounter) IncrementPlayerCounter() {
     c.mu.Lock()
@@ -51,6 +53,7 @@ func (c *ReadyToPlayCounter) IncrementPlayerCounter() {
 }
 
 func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
+
 	readyToPlayCounter := ReadyToPlayCounter{
         counter: 0,
     }
@@ -87,6 +90,7 @@ func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
     } else {
         return nil
     }
+
 }
 
 type Answer struct {
