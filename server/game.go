@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
+	"sync"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
@@ -38,52 +39,54 @@ func RunStartGameAction(game Game) {
 	runGameLoop(game.player1, game.player2)
 }
 
-func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) {
-	msgToSend := func(playerName string) string {
-		return common.MatchingPlayerMessage + playerName + common.ReadyToPlayMessage
-	}
+type ReadyToPlayCounter struct {
+    mu       sync.Mutex
+    counter  int
+}
 
-	var playerIsReady bool
-	for !playerIsReady {
-		common.Send(player.socket, msgToSend(otherPlayer.name))
-		msg, err := common.Receive(player.socket)
-		if err != nil {
-			logger.LogError(err)
-			readyChannel <- false // Error in connection, return error
-			return
-		}
-		if msg == common.ReadyToPlay {
-			playerIsReady = true
-		}
-	}
-
-	readyChannel <- true
+func (c *ReadyToPlayCounter) IncrementPlayerCounter() {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    c.counter++
 }
 
 func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
-	/*
-		Bool channel to notify player is ready to play.
-		True means players is ready to play. False that there was an
-		error and the game can not start.
-	*/
-	readyChannel := make(chan bool)
+	readyToPlayCounter := ReadyToPlayCounter{
+        counter: 0,
+    }
 
-	go readyToPlayLoop(player1, player2, readyChannel)
-	go readyToPlayLoop(player2, player1, readyChannel)
+    var wg sync.WaitGroup
 
-	playersReady := 0
-	for {
-		ready := <-readyChannel // New player notified that is ready
-		if !ready {
-			// todo: mejora, notificar al player que no se desconecto que el otro abandono la partida
-			return errors.New("player disconnected before game started")
-		}
-		playersReady++
-		if playersReady == 2 {
-			break
-		}
-	}
-	return nil
+    readyToPlayLoop := func(player Player, otherPlayer Player) {
+        msgToSend := func(playerName string) string {
+            return common.MatchingPlayerMessage + playerName + common.ReadyToPlayMessage
+        }
+
+        var playerIsReady bool
+        for !playerIsReady {
+            common.Send(player.socket, msgToSend(otherPlayer.name))
+            msg, err := common.Receive(player.socket)
+            if err != nil {
+                logger.LogError(err)
+                return
+            }
+            if msg == common.ReadyToPlay {
+                playerIsReady = true
+            }
+        }
+        readyToPlayCounter.IncrementPlayerCounter()
+        wg.Done()
+    }
+    wg.Add(2)
+	go readyToPlayLoop(player1, player2)
+	go readyToPlayLoop(player2, player1)
+    wg.Wait()
+
+    if readyToPlayCounter.counter < 2 {
+        return errors.New("player disconnected before game started")
+    } else {
+        return nil
+    }
 }
 
 type Answer struct {
