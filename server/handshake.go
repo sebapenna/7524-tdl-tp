@@ -12,62 +12,23 @@ import (
 )
 
 // Runs server actions before starting the game
+// returns true if the handshake with the client was successful; false otherwise
 func HandshakeServer(player Player) bool {
+
 	return startUpMenuServer(player)
+
 }
 
 // Runs client actions before starting the game
+// returns true if the handshake with the server was successful; false otherwise
 func HandshakeClient(currentSocket net.Conn) bool {
 
-	for {
-		promptReader := bufio.NewReader(os.Stdin)
-		messageFromServer, err := common.Receive(currentSocket)
-		VerifyErrorReveivedFromServer(err)
+	return startUpMenuClient(currentSocket)
 
-		if messageFromServer == CloseConnectionCommand {
-			logger.LogInfo(common.ExitMessage)
-
-			return false
-		}
-
-		if strings.HasPrefix(messageFromServer, common.WelcomeMessage) {
-			logger.PrintMessageReceived(messageFromServer)
-			common.Send(currentSocket, common.Success)
-			messageFromServerAux, err := common.Receive(currentSocket)
-			VerifyErrorReveivedFromServer(err)
-
-			logger.PrintMessageReceived(messageFromServerAux)
-			common.Send(currentSocket, common.Success)
-			messageFromServerAux2, err := common.Receive(currentSocket)
-			VerifyErrorReveivedFromServer(err)
-
-			logger.PrintMessageReceived(messageFromServerAux2)
-
-		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
-			logger.PrintMessageReceived(messageFromServer)
-			common.Send(currentSocket, common.Success)
-			messageFromServerAux, err := common.Receive(currentSocket)
-			VerifyErrorReveivedFromServer(err)
-
-			logger.PrintMessageReceived(messageFromServerAux)
-
-		} else {
-			logger.PrintMessageReceived(messageFromServer)
-		}
-
-		if messageFromServer == common.SearchingMatchMessage {
-			common.Send(currentSocket, common.Success)
-
-		} else {
-			fmt.Print(string(common.ColorGreen), ">> ", string(common.ColorReset))
-			textFromPrompt, _ := promptReader.ReadString('\n')
-			common.Send(currentSocket, textFromPrompt)
-		}
-
-	}
 }
 
-//returns true if after menu it is able to star looking for a game match , contrary case return false
+//(SERVER-SIDE) Sends messages to the client and analizes the answers received from it to display the corresponding Menu section / options.
+//returns true if after menu it is able to star looking for a game match , otherwise returns false
 func startUpMenuServer(player Player) bool {
 
 	logger.LogInfo("Player", player.id, "directed to main menu")
@@ -103,7 +64,42 @@ func startUpMenuServer(player Player) bool {
 
 }
 
-//Shows menu options and asks the client to pick one.
+//(CLIENT-SIDE) Sends messages to the server and analizes the answers received from it to select the desired Menu section / options.
+//returns true if after menu it is able to star looking for a game match , otherwise returns false
+func startUpMenuClient(currentSocket net.Conn) bool {
+
+	for {
+
+		messageFromServer, err := common.Receive(currentSocket)
+		VerifyErrorReveivedFromServer(err)
+
+		if messageFromServer == CloseConnectionCommand {
+			logger.LogInfo(common.ExitMessage)
+			return false
+		}
+
+		if strings.HasPrefix(messageFromServer, common.WelcomeMessage) {
+			printWelcomeReceivedFromServer(currentSocket)
+
+		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
+			printHelpReceivedFromServer(currentSocket)
+
+		} else {
+			logger.PrintMessageReceived(messageFromServer)
+		}
+
+		if messageFromServer == common.SearchingMatchMessage {
+			common.Send(currentSocket, common.Success)
+
+		} else {
+			readFromPromptAndSendItToTheServer(currentSocket)
+		}
+
+	}
+
+}
+
+//(SERVER-SIDE) Sends menu options to the client and asks it to pick one.
 func sendMainMenuOptions(player Player) (string, error) {
 
 	// greets user and shows menu
@@ -118,7 +114,7 @@ func sendMainMenuOptions(player Player) (string, error) {
 
 }
 
-// Shows options from HELP Submenu and asks the client to pick one.
+//(SERVER-SIDE) Sends HELP submenu options to the client and asks it to pick one.
 func sendHelpSubMenuOptions(player Player) error {
 
 	logger.LogInfo("Player", player.id, "selected option 2, showing help...")
@@ -142,21 +138,55 @@ func sendHelpSubMenuOptions(player Player) error {
 	return err
 }
 
+//(SERVER-SIDE) Sends a message to the client telling it that it's currently in queue looking for a match.
 func sendFindingMatchMessage(player Player) {
 	common.Send(player.socket, common.SearchingMatchMessage)
 	common.Receive(player.socket)
 }
 
-// disconnect client from player that requested option 3 (Exit) from Menu.
+//(SERVER-SIDE) Sends a message for the client to disconnect when it requested option 3 (Exit) from the main Menu.
 func disconnectPlayerFromMenu(player Player) {
 	common.Send(player.socket, CloseConnectionCommand)
 	logger.LogInfo("Player", player.id, "disconnected")
 }
 
-//sends panic (at client-side) if there was a problem receiving a message from the server.
-//Does nothing otherwise
+//(CLIENT-SIDE) Executes panic if there was a problem receiving a message from the server.
+//Does nothing if there weren't any problems.
 func VerifyErrorReveivedFromServer(err error) {
 	if err != nil {
 		panic(common.DisconnectAndExitMessage)
 	}
+}
+
+//(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire main Menu with its options
+func printWelcomeReceivedFromServer(currentSocket net.Conn) {
+	logger.PrintMessageReceived(common.WelcomeMessage)
+	common.Send(currentSocket, common.Success)
+	messageFromServerAux, err := common.Receive(currentSocket)
+	VerifyErrorReveivedFromServer(err)
+
+	logger.PrintMessageReceived(messageFromServerAux)
+	common.Send(currentSocket, common.Success)
+	messageFromServerAux2, err := common.Receive(currentSocket)
+	VerifyErrorReveivedFromServer(err)
+
+	logger.PrintMessageReceived(messageFromServerAux2)
+}
+
+//(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire HELP submenu with its options
+func printHelpReceivedFromServer(currentSocket net.Conn) {
+	logger.PrintMessageReceived(common.HelpMessage)
+	common.Send(currentSocket, common.Success)
+	messageFromServerAux, err := common.Receive(currentSocket)
+	VerifyErrorReveivedFromServer(err)
+
+	logger.PrintMessageReceived(messageFromServerAux)
+}
+
+//(CLIENT-SIDE) gets the next message to send to the server from the client's prompt
+func readFromPromptAndSendItToTheServer(currentSocket net.Conn) {
+	promptReader := bufio.NewReader(os.Stdin)
+	fmt.Print(string(common.ColorGreen), ">> ", string(common.ColorReset))
+	textFromPrompt, _ := promptReader.ReadString('\n')
+	common.Send(currentSocket, textFromPrompt)
 }
