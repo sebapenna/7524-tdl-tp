@@ -45,5 +45,5 @@ const (
 
 	ColorCyan  = "\033[96m"
 	ColorReset = "\033[0m"
-	ColorGreen = "\033[92"
+	ColorGreen = "\033[92m"
 )
