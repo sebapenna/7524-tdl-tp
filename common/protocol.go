@@ -40,6 +40,10 @@ const (
 	Success                = "OK"
 	ReadyToPlay            = "LISTO"
 
-	DisconnectAndExitMessage = "Server disconnected. Client exiting..."
+	DisconnectAndExitMessage = "SERVER DISCONNECTED. Client exiting..."
 	ExitMessage              = "Client exiting..."
+
+	ColorCyan  = "\033[96m"
+	ColorReset = "\033[0m"
+	ColorGreen = "\033[92"
 )
