@@ -3,6 +3,8 @@ package logger
 import (
 	"fmt"
 	"os"
+
+	"github.com/sebapenna/7524-tdl-tp/common"
 )
 
 func LogError(e error) {
@@ -10,7 +12,7 @@ func LogError(e error) {
 }
 
 func LogErrorMessage(a ...interface{}) {
-	_, _ = fmt.Fprintln(os.Stderr, a)
+	_, _ = fmt.Fprintln(os.Stderr, a...)
 }
 
 func LogInfo(a ...interface{}) {
@@ -18,7 +20,7 @@ func LogInfo(a ...interface{}) {
 }
 
 func PrintMessageReceived(msg string) {
-	colorCyan := "\033[96m"
-	colorReset := "\033[0m"
-	fmt.Println(string(colorCyan), "->: "+msg, string(colorReset))
+	//colorCyan := "\033[96m"
+	//colorReset := "\033[0m"
+	fmt.Println(string(common.ColorCyan), "->: "+msg, string(common.ColorReset))
 }

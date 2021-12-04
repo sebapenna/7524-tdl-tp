@@ -50,6 +50,7 @@ func readyToPlayLoop(player Player, otherPlayer Player, readyChannel chan bool) 
 		if err != nil {
 			logger.LogError(err)
 			readyChannel <- false // Error in connection, return error
+			//panic(err.Error())
 			return
 		}
 		if msg == common.ReadyToPlay {
@@ -66,6 +67,14 @@ func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
 		True means players is ready to play. False that there was an
 		error and the game can not start.
 	*/
+
+	/*defer func() {
+
+		if errMessage := recover(); errMessage != nil {
+			logger.LogInfo("Problem", errMessage)
+		}
+	}()*/
+
 	readyChannel := make(chan bool)
 
 	go readyToPlayLoop(player1, player2, readyChannel)

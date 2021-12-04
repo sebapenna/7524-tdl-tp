@@ -22,10 +22,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 	for {
 		promptReader := bufio.NewReader(os.Stdin)
 		messageFromServer, err := common.Receive(currentSocket)
-		if err != nil {
-			logger.LogInfo(common.DisconnectAndExitMessage)
-			return false
-		}
+		VerifyErrorReveivedFromServer(err)
 
 		if messageFromServer == CloseConnectionCommand {
 			logger.LogInfo(common.ExitMessage)
@@ -37,27 +34,21 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			logger.PrintMessageReceived(messageFromServer)
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux, err := common.Receive(currentSocket)
-			if err != nil {
-				logger.LogInfo(common.DisconnectAndExitMessage)
-				return false
-			}
+			VerifyErrorReveivedFromServer(err)
+
 			logger.PrintMessageReceived(messageFromServerAux)
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux2, err := common.Receive(currentSocket)
-			if err != nil {
-				logger.LogInfo(common.DisconnectAndExitMessage)
-				return false
-			}
+			VerifyErrorReveivedFromServer(err)
+
 			logger.PrintMessageReceived(messageFromServerAux2)
 
 		} else if strings.HasPrefix(messageFromServer, common.HelpMessage) {
 			logger.PrintMessageReceived(messageFromServer)
 			common.Send(currentSocket, common.Success)
 			messageFromServerAux, err := common.Receive(currentSocket)
-			if err != nil {
-				logger.LogInfo(common.DisconnectAndExitMessage)
-				return false
-			}
+			VerifyErrorReveivedFromServer(err)
+
 			logger.PrintMessageReceived(messageFromServerAux)
 
 		} else {
@@ -68,8 +59,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			common.Send(currentSocket, common.Success)
 
 		} else {
-			colorBlue := "\033[34m"
-			fmt.Print(string(colorBlue), ">> ")
+			fmt.Print(string(common.ColorGreen), ">> ", string(common.ColorReset))
 			textFromPrompt, _ := promptReader.ReadString('\n')
 			common.Send(currentSocket, textFromPrompt)
 		}
@@ -161,4 +151,12 @@ func sendFindingMatchMessage(player Player) {
 func disconnectPlayerFromMenu(player Player) {
 	common.Send(player.socket, CloseConnectionCommand)
 	logger.LogInfo("Player", player.id, "disconnected")
+}
+
+//sends panic (at client-side) if there was a problem receiving a message from the server.
+//Does nothing otherwise
+func VerifyErrorReveivedFromServer(err error) {
+	if err != nil {
+		panic(common.DisconnectAndExitMessage)
+	}
 }
