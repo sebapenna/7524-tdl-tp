@@ -59,6 +59,7 @@ func HandshakeClient(currentSocket net.Conn) bool {
 			common.Send(currentSocket, common.Success)
 
 		} else {
+
 			fmt.Print(string(common.ColorGreen), ">> ", string(common.ColorReset))
 			textFromPrompt, _ := promptReader.ReadString('\n')
 			common.Send(currentSocket, textFromPrompt)
@@ -156,7 +157,7 @@ func disconnectPlayerFromMenu(player Player) {
 //sends panic (at client-side) if there was a problem receiving a message from the server.
 //Does nothing otherwise
 func VerifyErrorReveivedFromServer(err error) {
-	if err != nil {
+	if err != nil { 
 		panic(common.DisconnectAndExitMessage)
 	}
 }
