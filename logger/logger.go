@@ -22,20 +22,10 @@ func LogInfo(a ...interface{}) {
 
 func PrintMessageReceived(msg string) {
 
-	multiple := `🤖->:`
-	askForNameAsci := `
-
-    █▀█ █▀█ █▀█   █▀▀ ▄▀█ █░█ █▀█ █▀█ ░   █ █▄░█ ▀█▀ █▀█ █▀█ █▀▄ █░█ █▀▀ █▀▀   █░█ █▄░█   █▄░█ █▀█ █▀▄▀█ █▄▄ █▀█ █▀▀
-    █▀▀ █▄█ █▀▄   █▀░ █▀█ ▀▄▀ █▄█ █▀▄ █   █ █░▀█ ░█░ █▀▄ █▄█ █▄▀ █▄█ █▄▄ ██▄   █▄█ █░▀█   █░▀█ █▄█ █░▀░█ █▄█ █▀▄ ██▄
-
-    █▀█ ▄▀█ █▀█ ▄▀█   ░░█ █░█ █▀▀ ▄▀█ █▀█ ▀
-    █▀▀ █▀█ █▀▄ █▀█   █▄█ █▄█ █▄█ █▀█ █▀▄ ▄
-        `
-	if strings.HasPrefix("Por favor,introduce un nombre para jugar: ", msg) {
-
-		fmt.Println(string(common.ColorCyan), multiple+askForNameAsci, string(common.ColorReset))
+	if strings.HasPrefix(common.AskForNameMessage, msg) {
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciAskForNameMessage, string(common.ColorReset))
 	} else {
-		fmt.Println(string(common.ColorCyan), multiple+msg, string(common.ColorReset))
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+msg, string(common.ColorReset))
 	}
 
 }

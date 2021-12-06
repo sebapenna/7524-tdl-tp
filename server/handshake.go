@@ -160,17 +160,24 @@ func VerifyErrorReveivedFromServer(err error) {
 
 //(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire main Menu with its options
 func printWelcomeReceivedFromServer(currentSocket net.Conn) {
-	logger.PrintMessageReceived(common.WelcomeMessage)
+	//logger.PrintMessageReceived(common.WelcomeMessage)
+	fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciWelcomeMessage, string(common.ColorReset))
 	common.Send(currentSocket, common.Success)
 	messageFromServerAux, err := common.Receive(currentSocket)
 	VerifyErrorReveivedFromServer(err)
 
-	logger.PrintMessageReceived(messageFromServerAux)
+	if strings.HasPrefix(common.ObjectiveMessage, messageFromServerAux) {
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+common.ObjectiveMessage, string(common.ColorReset))
+	}
+	//fmt.Println(string(common.ColorCyan), common.ServerArrow+messageFromServerAux+common.HelpMenuOptions, string(common.ColorReset))
+	//logger.PrintMessageReceived(messageFromServerAux)
 	common.Send(currentSocket, common.Success)
 	messageFromServerAux2, err := common.Receive(currentSocket)
 	VerifyErrorReveivedFromServer(err)
-
-	logger.PrintMessageReceived(messageFromServerAux2)
+	if strings.HasPrefix(common.MainMenuOptions, messageFromServerAux2) {
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciMainMenuOptions, string(common.ColorReset))
+	}
+	//logger.PrintMessageReceived(messageFromServerAux2)
 }
 
 //(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire HELP submenu with its options
