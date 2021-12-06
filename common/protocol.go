@@ -1,7 +1,7 @@
 package common
 
 const (
-	AskForNameMessage = "Por favor, introduce un nombre para jugar: "
+	AskForNameMessage = "Por favor,introduce un nombre para jugar: "
 	WelcomeMessage    = "Bienvenidos a  FIUBADOS: "
 	ObjectiveMessage  = "El objetivo de este juego es introducir a los alumnos que ingresan a la facultad en diversas cuestiones administrativas de su funcionamiento, siendo en el futuro muy útil para el desarrollo de su carrera profesional."
 	MainMenuOptions   = "(1) Jugar  (2) Ayuda  (3) Salir"
