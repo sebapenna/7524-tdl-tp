@@ -22,14 +22,14 @@ const (
 	HelpOption = "2"
 	ExitOption = "3"
 
-	MatchingPlayerMessage = "Está jugando contra el jugador: "
-	ReadyToPlayMessage    = ". Introduzca LISTO cuando esté listo para jugar"
+	MatchingPlayerMessage = "E̳s̳t̳á̳ j̳u̳g̳a̳n̳d̳o̳ c̳o̳n̳t̳r̳a̳ e̳l̳ j̳u̳g̳a̳d̳o̳r̳:̳"
+	ReadyToPlayMessage    = ".̳ I̳n̳t̳r̳o̳d̳u̳z̳c̳a̳ L̳I̳S̳T̳O̳ c̳u̳a̳n̳d̳o̳ e̳s̳t̳é̳ l̳i̳s̳t̳o̳ p̳a̳r̳a̳ j̳u̳g̳a̳r̳"
 
 	QuestionMessage = "Pregunta "
 	ColonMessage    = ": "
-	FirstOption     = " (1)"
-	SecondOption    = " (2)"
-	ThirdOption     = " (3)"
+	FirstOption     = " 1️⃣ "
+	SecondOption    = " 2️⃣ "
+	ThirdOption     = " 3️⃣ "
 
 	CorrectAnswerMessage               = "Respuesta correcta! "
 	WasFirstToAnswerMessage            = "Respondiste de primero! Recibes 3 puntos adicionales. "
@@ -81,5 +81,12 @@ const (
 				
 		`
 	AsciHelpMessage = `	E̳s̳t̳e̳ j̳u̳e̳g̳o̳ c̳o̳n̳s̳i̳s̳t̳e̳ e̳n̳ p̳a̳r̳t̳i̳d̳a̳s̳ 1̳v̳s̳1̳ e̳n̳ l̳a̳s̳ q̳u̳e̳ d̳o̳s̳ j̳u̳g̳a̳d̳o̳r̳e̳s̳ r̳e̳s̳p̳o̳n̳d̳e̳n̳ v̳a̳r̳i̳a̳s̳ p̳r̳e̳g̳u̳n̳t̳a̳s̳ d̳e̳ o̳p̳c̳i̳ó̳n̳ m̳ú̳l̳t̳i̳p̳l̳e̳.̳ C̳a̳d̳a̳ j̳u̳g̳a̳d̳o̳r̳ c̳o̳n̳t̳e̳s̳t̳a̳r̳á̳ e̳l̳ n̳ú̳m̳e̳r̳o̳ d̳e̳ l̳a̳ o̳p̳c̳i̳ó̳n̳ q̳u̳e̳ c̳o̳n̳s̳i̳d̳e̳r̳e̳ c̳o̳r̳r̳e̳c̳t̳a̳ e̳n̳ c̳a̳d̳a̳ p̳r̳e̳g̳u̳n̳t̳a̳.̳E̳l̳ j̳u̳g̳a̳d̳o̳r̳ q̳u̳e̳ r̳e̳s̳p̳o̳n̳d̳a̳ d̳e̳ f̳o̳r̳m̳a̳ c̳o̳r̳r̳e̳c̳t̳a̳ a̳u̳m̳e̳n̳t̳a̳ s̳u̳ p̳u̳n̳t̳u̳a̳c̳i̳ó̳n̳.̳S̳i̳ a̳m̳b̳o̳s̳ j̳u̳g̳a̳d̳o̳r̳e̳s̳ r̳e̳s̳p̳o̳n̳d̳e̳n̳ c̳o̳r̳r̳e̳c̳t̳a̳m̳e̳n̳t̳e̳ u̳n̳a̳ p̳r̳e̳g̳u̳n̳t̳a̳,̳ e̳l̳ p̳r̳i̳m̳e̳r̳o̳ q̳u̳e̳ h̳a̳y̳a̳ r̳e̳s̳p̳o̳n̳d̳i̳d̳o̳ s̳e̳ l̳l̳e̳v̳a̳ p̳u̳n̳t̳o̳s̳ a̳d̳i̳c̳i̳o̳n̳a̳l̳e̳s̳.̳E̳l̳ j̳u̳g̳a̳d̳o̳r̳ q̳u̳e̳ r̳e̳s̳p̳o̳n̳d̳a̳ i̳n̳c̳o̳r̳r̳e̳c̳t̳a̳m̳e̳n̳t̳e̳ n̳o̳ s̳u̳m̳a̳ n̳i̳n̳g̳u̳n̳ p̳u̳n̳t̳o̳.̳
+		`
+	AsciHelpMenuOption = `
+		
+	▄▀ ▄█─ ▀▄ 　 ░█──░█ █▀▀█ █── ▀█─█▀ █▀▀ █▀▀█ 　 █▀▀█ █── 　 ░█▀▄▀█ █▀▀ █▀▀▄ █──█  █▀▀█ █▀▀█ ─▀─ █▀▀▄ █▀▀ ─▀─ █▀▀█ █▀▀█ █── 
+	█─ ─█─ ─█ 　 ─░█░█─ █──█ █── ─█▄█─ █▀▀ █▄▄▀ 　 █▄▄█ █── 　 ░█░█░█ █▀▀ █──█ █──█  █──█ █▄▄▀ ▀█▀ █──█ █── ▀█▀ █──█ █▄▄█ █── 
+	▀▄ ▄█▄ ▄▀ 　 ──▀▄▀─ ▀▀▀▀ ▀▀▀ ──▀── ▀▀▀ ▀─▀▀ 　 ▀──▀ ▀▀▀ 　 ░█──░█ ▀▀▀ ▀──▀ ─▀▀▀  █▀▀▀ ▀─▀▀ ▀▀▀ ▀──▀ ▀▀▀ ▀▀▀ █▀▀▀ ▀──▀ ▀▀▀
+
 		`
 )

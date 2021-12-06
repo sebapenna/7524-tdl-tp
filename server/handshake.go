@@ -182,12 +182,17 @@ func printWelcomeReceivedFromServer(currentSocket net.Conn) {
 
 //(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire HELP submenu with its options
 func printHelpReceivedFromServer(currentSocket net.Conn) {
-	logger.PrintMessageReceived(common.HelpMessage)
+
+	fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciHelpMessage, string(common.ColorReset))
+
+	//logger.PrintMessageReceived(common.HelpMessage)
 	common.Send(currentSocket, common.Success)
 	messageFromServerAux, err := common.Receive(currentSocket)
 	VerifyErrorReveivedFromServer(err)
-
-	logger.PrintMessageReceived(messageFromServerAux)
+	if strings.HasPrefix(common.HelpMenuOptions, messageFromServerAux) {
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciHelpMenuOption, string(common.ColorReset))
+	}
+	//logger.PrintMessageReceived(messageFromServerAux)
 }
 
 //(CLIENT-SIDE) gets the next message to send to the server from the client's prompt
