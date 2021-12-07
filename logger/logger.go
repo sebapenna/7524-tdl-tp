@@ -24,8 +24,12 @@ func PrintMessageReceived(msg string) {
 
 	if strings.HasPrefix(common.AskForNameMessage, msg) {
 		fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciAskForNameMessage, string(common.ColorReset))
-		//} else if strings.HasPrefix(common.PlayerMessage, msg) {
-		//	fmt.Println(string(common.ColorCyan), common.ServerArrow+msg+hola, string(common.ColorReset))
+	} else if strings.Contains(msg, common.WinnerMessage) || strings.Contains(msg, common.OtherPlayerDisconnectedMessage) {
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+msg, string(common.ColorReset))
+		fmt.Println(string(common.ColorYellow), common.AsciWinnerMessage, string(common.ColorReset))
+	} else if strings.Contains(msg, common.TieMessage) {
+		fmt.Println(string(common.ColorCyan), common.ServerArrow+msg, string(common.ColorReset))
+		fmt.Println(string(common.ColorYellow), common.AsciTieMessage, string(common.ColorReset))
 	} else {
 		fmt.Println(string(common.ColorCyan), common.ServerArrow+msg, string(common.ColorReset))
 	}

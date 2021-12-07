@@ -4,8 +4,8 @@ import (
 	"errors"
 	"math/rand"
 	"strconv"
-	"time"
 	"sync"
+	"time"
 
 	"github.com/sebapenna/7524-tdl-tp/common"
 	"github.com/sebapenna/7524-tdl-tp/logger"
@@ -39,57 +39,55 @@ func RunStartGameAction(game Game) {
 	runGameLoop(game.player1, game.player2)
 }
 
-
 type ReadyToPlayCounter struct {
-    mu       sync.Mutex
-    counter  int
+	mu      sync.Mutex
+	counter int
 }
 
-
 func (c *ReadyToPlayCounter) IncrementPlayerCounter() {
-    c.mu.Lock()
-    defer c.mu.Unlock()
-    c.counter++
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.counter++
 }
 
 func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
 
 	readyToPlayCounter := ReadyToPlayCounter{
-        counter: 0,
-    }
+		counter: 0,
+	}
 
-    var wg sync.WaitGroup
+	var wg sync.WaitGroup
 
-    readyToPlayLoop := func(player Player, otherPlayer Player) {
-        msgToSend := func(playerName string) string {
-            return common.MatchingPlayerMessage + playerName + common.ReadyToPlayMessage
-        }
+	readyToPlayLoop := func(player Player, otherPlayer Player) {
+		msgToSend := func(playerName string) string {
+			return common.MatchingPlayerMessage + playerName + common.ReadyToPlayMessage
+		}
 
-        var playerIsReady bool
-        for !playerIsReady {
-            common.Send(player.socket, msgToSend(otherPlayer.name))
-            msg, err := common.Receive(player.socket)
-            if err != nil {
-                logger.LogError(err)
-                return
-            }
-            if msg == common.ReadyToPlay {
-                playerIsReady = true
-            }
-        }
-        readyToPlayCounter.IncrementPlayerCounter()
-        wg.Done()
-    }
-    wg.Add(2)
+		var playerIsReady bool
+		for !playerIsReady {
+			common.Send(player.socket, msgToSend(otherPlayer.name))
+			msg, err := common.Receive(player.socket)
+			if err != nil {
+				logger.LogError(err)
+				return
+			}
+			if msg == common.ReadyToPlay {
+				playerIsReady = true
+			}
+		}
+		readyToPlayCounter.IncrementPlayerCounter()
+		wg.Done()
+	}
+	wg.Add(2)
 	go readyToPlayLoop(player1, player2)
 	go readyToPlayLoop(player2, player1)
-    wg.Wait()
+	wg.Wait()
 
-    if readyToPlayCounter.counter < 2 {
-        return errors.New("player disconnected before game started")
-    } else {
-        return nil
-    }
+	if readyToPlayCounter.counter < 2 {
+		return errors.New("player disconnected before game started")
+	} else {
+		return nil
+	}
 
 }
 
@@ -152,6 +150,7 @@ func notifyWinner(player1 Player, player2 Player) {
 	switch {
 	case player1.points > player2.points:
 		notifyGameResult(common.PlayerMessage+player1.name+common.WinnerMessage, player1, player2)
+
 	case player2.points > player1.points:
 		notifyGameResult(common.PlayerMessage+player2.name+common.WinnerMessage, player1, player2)
 	default:
@@ -348,4 +347,5 @@ func runGameLoop(player1 Player, player2 Player) {
 	}
 
 	notifyWinner(player1, player2)
+
 }
