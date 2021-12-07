@@ -7,6 +7,7 @@ type Question struct {
 	correctOption  int
 }
 
+//returns a random question for players to answer
 func CreateRandomQuestions() []Question {
 	questions := []Question{
 		{

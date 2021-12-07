@@ -21,11 +21,13 @@ type Game struct {
 	player2 Player
 }
 
+//disconnects both players of game
 func DisconnectGame(game Game) {
 	DisconnectPlayer(game.player1)
 	DisconnectPlayer(game.player2)
 }
 
+//starts a new game with 2 players
 func RunStartGameAction(game Game) {
 	defer DisconnectGame(game)
 
@@ -50,6 +52,7 @@ func (c *ReadyToPlayCounter) IncrementPlayerCounter() {
 	c.counter++
 }
 
+//notifies both players that the game is about to start
 func notifyPlayersStartOfGame(player1 Player, player2 Player) error {
 
 	readyToPlayCounter := ReadyToPlayCounter{
@@ -102,6 +105,7 @@ type PlayerError struct {
 	err    error
 }
 
+//sends the corresponding question to each player and receives their answer
 func sendQuestionsAndReceiveAnswers(
 	player *Player,
 	questionsChannel chan Question,
@@ -141,6 +145,7 @@ func sendQuestionsAndReceiveAnswers(
 	}
 }
 
+//notifies the results of the game
 func notifyWinner(player1 Player, player2 Player) {
 	notifyGameResult := func(msg string, player1 Player, player2 Player) {
 		common.Send(player1.socket, msg)
@@ -158,6 +163,7 @@ func notifyWinner(player1 Player, player2 Player) {
 	}
 }
 
+//notifies if one of the players has disconnected the game
 func notifyOtherPlayerDisconnected(player Player) {
 	common.Send(player.socket, common.OtherPlayerDisconnectedMessage)
 }
@@ -241,6 +247,7 @@ func distributePointsAccordingToOptionsReceived(answer1 *Answer, answer2 *Answer
 
 }
 
+// shows the correct answer after each question was made and answered
 func showCorrectAnswer(player1 Player, player2 Player, questionAsked Question) error {
 	readyToContinueChannel := make(chan bool)
 	messageToSendPlayer1, messageToSendPlayer2 := getMessagesToSendAccordingToWhoeverAnsweredCorrectlyOrNot(player1, player2, questionAsked)
@@ -252,15 +259,12 @@ func showCorrectAnswer(player1 Player, player2 Player, questionAsked Question) e
 	go readyToContinue(player2, messageToSendPlayer2, readyToContinueChannel)
 
 	playersReady := 0
-	for {
+	for playersReady != 2 {
 		ready := <-readyToContinueChannel
 		if !ready {
 			return errors.New("Player disconnected during the game")
 		}
 		playersReady++
-		if playersReady == 2 {
-			break
-		}
 	}
 	return nil
 }
@@ -299,6 +303,7 @@ func getMessagesToSendAccordingToWhoeverAnsweredCorrectlyOrNot(player1, player2 
 
 }
 
+// makes sure both player are ready to continue the game
 func readyToContinue(player Player, messageToSend string, readyToContinueChannel chan bool) {
 	common.Send(player.socket, messageToSend)
 	msg, err := common.Receive(player.socket)
@@ -311,6 +316,7 @@ func readyToContinue(player Player, messageToSend string, readyToContinueChannel
 	readyToContinueChannel <- true
 }
 
+//runs game between two players
 func runGameLoop(player1 Player, player2 Player) {
 	questionsChannel1 := make(chan Question)
 	questionsChannel2 := make(chan Question)

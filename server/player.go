@@ -41,6 +41,7 @@ func RunPlayerAction(player Player) {
 	}
 }
 
+//asks each player their name
 func RequestPlayerName(player *Player) {
 	common.Send(player.socket, common.AskForNameMessage)
 	playerName, err := common.Receive(player.socket)
