@@ -22,8 +22,8 @@ const (
 	HelpOption = "2"
 	ExitOption = "3"
 
-	MatchingPlayerMessage = "E̳s̳t̳á̳ j̳u̳g̳a̳n̳d̳o̳ c̳o̳n̳t̳r̳a̳ e̳l̳ j̳u̳g̳a̳d̳o̳r̳:̳"
-	ReadyToPlayMessage    = ".̳ I̳n̳t̳r̳o̳d̳u̳z̳c̳a̳ L̳I̳S̳T̳O̳ c̳u̳a̳n̳d̳o̳ e̳s̳t̳é̳ l̳i̳s̳t̳o̳ p̳a̳r̳a̳ j̳u̳g̳a̳r̳"
+	MatchingPlayerMessage = "E̳s̳t̳á̳ j̳u̳g̳a̳n̳d̳o̳ c̳o̳n̳t̳r̳a̳ e̳l̳ j̳u̳g̳a̳d̳o̳r̳:̳  "
+	ReadyToPlayMessage    = ".   I̳n̳t̳r̳o̳d̳u̳z̳c̳a̳ L̳I̳S̳T̳O̳ c̳u̳a̳n̳d̳o̳ e̳s̳t̳é̳ l̳i̳s̳t̳o̳ p̳a̳r̳a̳ j̳u̳g̳a̳r̳"
 
 	QuestionMessage = "PREGUNTA "
 	ColonMessage    = ": 👉 "

@@ -160,35 +160,38 @@ func VerifyErrorReveivedFromServer(err error) {
 
 //(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire main Menu with its options
 func printWelcomeReceivedFromServer(currentSocket net.Conn) {
-	fmt.Println(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
-	fmt.Println(string(common.ColorYellow), common.AsciWelcomeMessage, string(common.ColorReset))
+
+	logger.LogInfo(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
+	logger.LogInfo(string(common.ColorYellow), common.AsciWelcomeMessage, string(common.ColorReset))
 	common.Send(currentSocket, common.Success)
-	messageFromServerAux, err := common.Receive(currentSocket)
+
+	_, err := common.Receive(currentSocket)
 	VerifyErrorReveivedFromServer(err)
 
-	if strings.HasPrefix(common.ObjectiveMessage, messageFromServerAux) {
-		fmt.Println(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
-		fmt.Println(string(common.ColorCyan), common.ObjectiveMessage, string(common.ColorReset))
-	}
+	logger.LogInfo(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
+	logger.LogInfo(string(common.ColorCyan), common.ObjectiveMessage, string(common.ColorReset))
 	common.Send(currentSocket, common.Success)
-	messageFromServerAux2, err := common.Receive(currentSocket)
+
+	_, err = common.Receive(currentSocket)
 	VerifyErrorReveivedFromServer(err)
-	if strings.HasPrefix(common.MainMenuOptions, messageFromServerAux2) {
-		fmt.Println(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
-		fmt.Println(string(common.ColorPurple), common.AsciMainMenuOptions, string(common.ColorReset))
-	}
+
+	logger.LogInfo(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
+	logger.LogInfo(string(common.ColorPurple), common.AsciMainMenuOptions, string(common.ColorReset))
+
 }
 
 //(CLIENT-SIDE) Finishes the send-receive protocol in order to print the entire HELP submenu with its options
 func printHelpReceivedFromServer(currentSocket net.Conn) {
-	fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciHelpMessage, string(common.ColorReset))
+
+	logger.LogInfo(string(common.ColorCyan), common.ServerArrow+common.AsciHelpMessage, string(common.ColorReset))
 	common.Send(currentSocket, common.Success)
-	messageFromServerAux, err := common.Receive(currentSocket)
+
+	_, err := common.Receive(currentSocket)
 	VerifyErrorReveivedFromServer(err)
-	if strings.HasPrefix(common.HelpMenuOptions, messageFromServerAux) {
-		fmt.Println(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
-		fmt.Println(string(common.ColorPurple), common.AsciHelpMenuOption, string(common.ColorReset))
-	}
+
+	logger.LogInfo(string(common.ColorCyan), common.ServerArrow, string(common.ColorReset))
+	logger.LogInfo(string(common.ColorPurple), common.AsciHelpMenuOption, string(common.ColorReset))
+
 }
 
 //(CLIENT-SIDE) gets the next message to send to the server from the client's prompt
