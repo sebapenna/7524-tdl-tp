@@ -24,6 +24,8 @@ func PrintMessageReceived(msg string) {
 
 	if strings.HasPrefix(common.AskForNameMessage, msg) {
 		fmt.Println(string(common.ColorCyan), common.ServerArrow+common.AsciAskForNameMessage, string(common.ColorReset))
+		//} else if strings.HasPrefix(common.PlayerMessage, msg) {
+		//	fmt.Println(string(common.ColorCyan), common.ServerArrow+msg+hola, string(common.ColorReset))
 	} else {
 		fmt.Println(string(common.ColorCyan), common.ServerArrow+msg, string(common.ColorReset))
 	}
