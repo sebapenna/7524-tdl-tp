@@ -10,11 +10,11 @@ type Question struct {
 func CreateRandomQuestions() []Question {
 	questions := []Question{
 		{
-			questionStr:   "Al aprobar la cursada de una materia cuantos cuatrimestres tiene uno para poder rendir el final ?",
+			questionStr:   "A̳l̳ a̳p̳r̳o̳b̳a̳r̳ l̳a̳ c̳u̳r̳s̳a̳d̳a̳ d̳e̳ u̳n̳a̳ m̳a̳t̳e̳r̳i̳a̳ c̳u̳a̳n̳t̳o̳s̳ c̳u̳a̳t̳r̳i̳m̳e̳s̳t̳r̳e̳s̳ t̳i̳e̳n̳e̳ u̳n̳o̳ p̳a̳r̳a̳ p̳o̳d̳e̳r̳ r̳e̳n̳d̳i̳r̳ e̳l̳ f̳i̳n̳a̳l̳ ?̳",
 			options:       []string{"1. ", "6. ", "3. "},
 			correctOption: 3},
 		{
-			questionStr:   "Al aprobar la cursada de una materia cuantas posibilidades tengo para rendir el final? ",
+			questionStr:   "A̳l̳ a̳p̳r̳o̳b̳a̳r̳ l̳a̳ c̳u̳r̳s̳a̳d̳a̳ d̳e̳ u̳n̳a̳ m̳a̳t̳e̳r̳i̳a̳ c̳u̳a̳n̳t̳a̳s̳ p̳o̳s̳i̳b̳i̳l̳i̳d̳a̳d̳e̳s̳ t̳e̳n̳g̳o̳ p̳a̳r̳a̳ r̳e̳n̳d̳i̳r̳ e̳l̳ f̳i̳n̳a̳l̳?̳ ",
 			options:       []string{"1. ", "3. ", "Depende de cada profesor. "},
 			correctOption: 2},
 		{
