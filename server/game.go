@@ -233,16 +233,23 @@ func distributePointsAccordingToOptionsReceived(answer1 *Answer, answer2 *Answer
 	} else if answer1.optionChosen == correctOption && answer2.optionChosen != correctOption {
 		answer1.player.points += 3
 		answer1.player.lastAnswerWasCorrect = true
+		answer1.player.wasFirstToAnswerCorrectly = false
 		answer2.player.lastAnswerWasCorrect = false
+		answer2.player.wasFirstToAnswerCorrectly = false
 
 	} else if answer1.optionChosen != correctOption && answer2.optionChosen == correctOption {
 		answer2.player.points += 3
 		answer1.player.lastAnswerWasCorrect = false
+		answer1.player.wasFirstToAnswerCorrectly = false
 		answer2.player.lastAnswerWasCorrect = true
+		answer2.player.wasFirstToAnswerCorrectly = false
 
 	} else {
 		answer1.player.lastAnswerWasCorrect = false
+		answer1.player.wasFirstToAnswerCorrectly = false
 		answer2.player.lastAnswerWasCorrect = false
+		answer2.player.wasFirstToAnswerCorrectly = false
+
 	}
 
 }
