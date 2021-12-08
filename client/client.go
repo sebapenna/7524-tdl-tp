@@ -49,10 +49,6 @@ func runClientGameLoop(currentSocket net.Conn) {
 
 		messageFromServer, err := common.Receive(currentSocket)
 		server.VerifyErrorReveivedFromServer(err)
-		//if err != nil {
-		//logger.LogInfo(common.DisconnectAndExitMessage)
-		//panic(err)
-		//}
 
 		if messageFromServer == common.CloseConnectionCommand {
 			logger.LogInfo(common.ExitMessage)
