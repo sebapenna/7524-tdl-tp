@@ -16,6 +16,16 @@ Al final del juego, el jugador con la mayor puntuación gana. ¡Buena suerte!
 
 (Pueden llevarse a cabo multiples partidas a la vez).
 
+## Intregrantes:
+- Sebastian Penna 
+- Ignacio Goicoa
+- Miguel Vazquez
+- Paula Bruck
+
+## Video de Youtube: 
+-Link al video de youtube en el cual se explica toda la investigación realizada:
+[![7524-tdl-tp](https://img.youtube.com/vi/IBmuDkQVv_w/0.jpg)](https://www.youtube.com/watch?v=IBmuDkQVv_w)
+
 [//]: # (- Cleanup unused dependencies: `go mod tidy`)
 
 ## Guía de instalación y ejecución.
