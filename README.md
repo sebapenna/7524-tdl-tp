@@ -19,7 +19,7 @@ Al final del juego, el jugador con la mayor puntuación gana. ¡Buena suerte!
 ## Intregrantes:
 - Sebastian Penna 
 - Ignacio Goicoa
-- Miguel Vazquez
+- Miguel Vásquez
 - Paula Bruck
 
 ## Video de Youtube: 
