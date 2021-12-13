@@ -25,7 +25,7 @@ Al final del juego, el jugador con la mayor puntuación gana. ¡Buena suerte!
 ## Video de Youtube: 
 - Link al video de youtube en el cual se explica toda la investigación realizada:
 
-[![7524-tdl-tp](https://img.youtube.com/vi/IBmuDkQVv_w/0.jpg)](https://www.youtube.com/watch?v=SZDhD0Fu73U)
+[![7524-tdl-tp](https://img.youtube.com/vi/aTQqW6J9bBo/0.jpg)](https://www.youtube.com/watch?v=aTQqW6J9bBo)
 
 [//]: # (- Cleanup unused dependencies: `go mod tidy`)
 
