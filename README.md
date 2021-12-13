@@ -17,10 +17,10 @@ Al final del juego, el jugador con la mayor puntuación gana. ¡Buena suerte!
 (Pueden llevarse a cabo multiples partidas a la vez).
 
 ## Intregrantes:
-- Sebastian Penna 
-- Ignacio Goicoa
-- Miguel Vásquez
-- Paula Bruck
+- Sebastian Penna [(https://github.com/sebapenna)]
+- Ignacio Goicoa [(https://github.com/igoicoa)]
+- Miguel Vásquez [(https://github.com/MiguelV5)]
+- Paula Bruck [(https://github.com/paulabruck)]
 
 ## Video de Youtube: 
 - Link al video de youtube en el cual se explica toda la investigación realizada:
