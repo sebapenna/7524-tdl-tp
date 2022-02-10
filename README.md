@@ -27,6 +27,10 @@ Al final del juego, el jugador con la mayor puntuación gana. ¡Buena suerte!
 
 [![7524-tdl-tp](https://img.youtube.com/vi/aTQqW6J9bBo/0.jpg)](https://www.youtube.com/watch?v=aTQqW6J9bBo)
 
+## Video de Trailer:
+
+[![7524-tdl-tp](https://img.youtube.com/vi/RSbegdzebbw/0.jpg)](https://www.youtube.com/watch?v=RSbegdzebbw)
+
 [//]: # (- Cleanup unused dependencies: `go mod tidy`)
 
 ## Guía de instalación y ejecución.
